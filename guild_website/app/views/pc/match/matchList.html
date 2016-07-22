@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>电竞侠移动电竞大奖赛揭幕赛</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/public/css/pc/match/join.css?5fccec42ab">
+</head>
+<body>
+<!-- header begin -->
+<div class="header">
+  <div class="inner"><span class="logo">电竞侠</span></div>
+</div>
+<!-- header end -->
+<!-- content begin -->
+<div class="content">
+  <!-- breadcrumb begin -->
+  <ul class="breadcrumb">
+    <li class="first active">1.选择报名赛事<b></b><i></i></li>
+    <li>2.验证手机<b></b><i></i></li>
+    <li>3.填写报名信息<b></b><i></i></li>
+    <li class="last">4.完成<b></b><i></i></li>
+  </ul>
+  <!-- breadcrumb end -->
+
+  <div class="list-wrap">
+    <ul id="raceList" class="list">
+    %{
+        def count = 0;
+    }%
+    
+    #{list items:matchList,as:'item'}
+     %{ def now = new Date().time
+        if ( now > item?.applyEndTime || now > item?.matchStartTime)
+            continue
+            
+        count++;
+        def comingSoon = (now < item?.applyStartTime);
+
+     }%
+     #{if comingSoon == true}
+      <li class="item" style="cursor:default">
+          <img src="${item.logoImgUrl}" alt="" />
+
+          <h2 class="title"><span class="text">${item.title}</span><i class="#{if null != item.awardType && item.awardType.contains('现金')}icon icon-yen #{/if}"></i></h2>
+          <p class="state">状态：<em class="bmz">预告中
+          <p class="reward">奖励：${item?.awardType}</p>
+          <p class="time">时间：${new Date(item?.matchStartTime).format('yyyy.MM.dd')}-${new Date(item?.matchEndTime).format('MM.dd')}</p>
+          #{if item.level !=''}
+          <span class="lev lev-s">${item.level}</span>
+          #{/if}
+      </li>
+     #{/if}
+     #{else}
+      <li class="item">
+        <a class="in"  href="checkMobile.html?subjectId=${id}&matchId=${item.id}">
+          <img src="${item.logoImgUrl}" alt="" />
+
+          <h2 class="title"><span class="text">${item.title}</span><i class="#{if null != item.awardType && item.awardType.contains('现金')}icon icon-yen #{/if}"></i></h2>
+          <p class="state">状态：<em class="bmz">报名中</em>
+          <p class="reward">奖励：${item?.awardType}</p>
+         
+          <p class="time">时间：${new Date(item?.matchStartTime).format('yyyy.MM.dd')}-${new Date(item?.matchEndTime).format('MM.dd')}</p>
+          #{if item.level !=''}
+          <span class="lev lev-s">${item.level}</span>
+          #{/if}
+        </a>
+      </li>
+      #{/else}
+      
+      #{/list}
+      #{if count==0}
+
+         <div class="tips-wrap"><p>暂无可报名赛事！</p></div>
+
+      #{/if}
+    </ul>
+  </div>
+</div>
+<!-- content end -->
+
+#{include file="/common/footer.html" /}
+
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/seajs/sea.js"></script>
+<script src="/public/js/lib/dialog-plus-min.js"></script>
+<script>
+  var verNum = new Date().getTime();
+  seajs.config({
+    base: "/public/js/",
+    map: [[ '.js', '.js?v='+verNum+'' ]]
+  });
+  seajs.use("app/match/join.js");
+</script>
+</body>
+</html>

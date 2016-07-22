@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" href="/public/images/favicon.ico" type="image/x-icon" />
+    <title>电竞侠 - 移动电竞全民赛事平台</title>
+    <meta name="keywords" content="电竞手游,电竞手游联赛,电竞手游视频,电竞手游实时语音开黑,自由之战联赛,自由之战视频,穿越火线手游联赛,穿越火线手游视频,电竞手游战队,电竞手游礼包,电竞手游论坛,电竞手游专区" />
+    <meta name="description" content="电竞侠 - 手游电竞平台提供全面丰富的手游赛事、高清电竞手游视频、实时语音开黑服务，包含自由之战、王者荣耀、穿越火线手游、全民枪战、全民超神、虚荣、时空召唤、梦三国手游、部落冲突COC、火线精英手游、英雄团、全民突击、魔霸之王等电竞手游联赛、视频、开黑！内容最快最全，带给你不一样的电竞手游体验。" />
+	<link rel="stylesheet" type="text/css" href="/public/css/help.css?01">
+</head>
+<body>
+<div class="top-bar">
+	<div class="top-con">
+		<a href="index.html" target="_self"><div class="logo"></div></a>
+		<ul class="top-menu">
+			<li><a href="index.html" target="_self">首页</a></li>
+			<!--  <li><a href="http://gh.kkyuyin.com" target="_self">战队管理平台</a></li> -->
+			<li><a href="http://bar.kkyuyin.com/" target="_self">游戏管理平台</a></li>
+			<li><a href="sdk.html" target="_self">SDK合作</a></li>
+			<!--   <li class="current"><a href="#">更新说明</a></li> -->
+			<li><a href="help.html" target="_self">帮助</a></li>
+			<li><a href="about.html" target="_self">关于</a></li>
+		</ul>
+	</div>
+</div>
+<div class="main-wrap">
+	<div class="nav-wrap">
+		<ul class="nav-list">
+			<li class="current"><a href="#">Android平台</a></li>
+			<li><a href="#">iOS平台</a></li>
+			<li style="display: none;"><a href="#">队长管理平台</a></li>
+			<li style="display: none;"><a href="#">吧主管理平台</a></li>
+		</ul>
+	</div>
+	<div class="con-wrap">
+		<div class="content">
+			<ul class="update-con">
+			    <li><a href="http://tieba.baidu.com/p/3476124353">电竞侠2.0.0 for Android全新发布</a><span class="time">2014-12-19</span></li>
+			    <li><a href="http://tieba.baidu.com/p/3448495303">电竞侠1.5.4 for Android全新发布</a><span class="time">2014-12-01</span></li>
+			    <li><a href="http://tieba.baidu.com/p/3419019015">电竞侠1.5.3 for Android全新发布</a><span class="time">2014-11-19</span></li>
+                <li><a href="http://tieba.baidu.com/p/3303882812">电竞侠1.5.1 for Android全新发布</a><span class="time">2014-09-19</span></li>
+                <li><a href="http://tieba.baidu.com/p/3256281957">电竞侠1.5.0 for Android全新发布</a><span class="time">2014-08-26</span></li>
+                <li><a href="http://tieba.baidu.com/p/3216647304">电竞侠1.4.0 for Android全新发布</a><span class="time">2014-08-08</span></li>
+                <li><a href="http://tieba.baidu.com/p/3179083219">电竞侠1.3.1 for Android全新发布</a><span class="time">2014-07-21</span></li>
+				<li><a href="http://tieba.baidu.com/p/3152407481">电竞侠1.3.0 for Android全新发布</a><span class="time">2014-07-08</span></li>
+				<li><a href="http://tieba.baidu.com/p/3098257605">电竞侠1.2.2 for Android全新发布</a><span class="time">2014-06-11</span></li>
+				<li><a href="http://tieba.baidu.com/p/3061013775">电竞侠1.2.0 for Android全新发布</a><span class="time">2014-05-23</span></li>
+				<li><a href="http://tieba.baidu.com/p/3042635718">电竞侠1.1.2 for Android全新发布</a><span class="time">2014-05-14</span></li>
+				<li><a href="http://tieba.baidu.com/p/3012802568">电竞侠1.1.0 for Android全新发布</a><span class="time">2014-04-29</span></li>
+			<ul>
+		</div>
+		<div class="content" style="display: none;">
+			<ul class="update-con">
+				<li><a href="#">即将公测</a><span class="time"></span></li>
+			<ul>
+		</div>
+		<div class="content" style="display: none;">
+			<ul class="update-con">
+			<ul>
+		</div>
+		<div class="content"style="display: none;">
+			<ul class="update-con">
+			<ul>
+		</div>
+	</div>
+</div>
+
+#{include file="/common/footer.html" /}
+	
+</body>
+<script src="/public/js/lib/jquery-1.10.2.js"></script>
+<script src="/public/js/seajs/sea.js"></script>
+<script>
+var verNum = Date().valueOf(); 
+
+seajs.config({
+  
+  //加版本号
+  map: [
+    [ '.js', '.js?v='+verNum+'' ]
+  ]
+});
+seajs.use("/public/js/app/help/help.js");
+</script>
+</html>

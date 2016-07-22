@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- 投诉爽约提交图片界面 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>提交爽约截图</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	<p class="my-fight-pic-p">若对方爽约, 请上传与对方的聊天历史截图作为凭证</p>
+	<form id='form' onsubmit="return false;">
+	<input id="api-upload" type="hidden" value="/m/match/uploadImg">
+	<input id="api-submit" type="hidden" value="/m/match/submitImgs">
+	<input id="upload-name" type="hidden" value="file">
+	<input name="schedulePlayId" type="hidden" value="${schedulePlayId}">
+	<input name="squadId" type="hidden" value="${squadId}">
+	<input name="imgType" id="imgType" type="hidden" value="2">
+	<input id="maxImgCount" type="hidden" value="6">
+	
+	<div class="destory-fight-con">
+		<ul class="list" id="img-list">
+		    #{set count:0/}
+			#{list items: list, as:'img' }
+				#{set count:count+1/}
+	    		<li><div class="img demo-pic"><img class="ig" src="${img.imgUrl}"/></div></li>
+	    	#{/list}
+			
+		    #{if count < 6}
+			<li id="uploadLi">
+				<div class="up-load">
+					<input id="file-btn" type="input" class="file-input" style="display:none" />
+					<input id="file-input" type="file" multiple class="file-input" accept="image/*">
+				</div>
+			</li>
+			#{/if}
+		</ul>
+	</div>
+	
+	<div class="action-fixed">
+		<div id="submit-btn" class="btn-pic">
+				提交
+		</div>
+	</div>
+	</form>
+
+<!--提示浮层-->
+<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/canvas-to-blob.min.js"></script>
+<script src="/public/js/mobile/match/play_img_upload.js"></script>
+<script>
+	JSBridge.callNative("NineGameClient", "hideShareButton");
+</script>
+</body>
+</html>

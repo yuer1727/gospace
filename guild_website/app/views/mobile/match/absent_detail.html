@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- 投诉爽约提交图片界面 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>爽约详情</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+
+	<div class="win-gift-rule fight-fault-rule">
+    	<div class="top-title top-title2"><h1>对方爽约凭证</h1></div>
+	    <div class="img-list">
+	    	#{list items: list, as:'img' }
+	    		<div class="img"><img class="ig" src="${img.imgUrl}"/></div>
+	    	#{/list}
+	    </div>
+    </div>
+
+    <div class="win-gift-rule fight-fault-rule">
+    	<div class="top-title top-title2"><h1>处理结果</h1></div>
+	    <div class="text-des-p">
+	    	#{if playItemDTO.captainId == userId && playItemDTO.playState == 2}
+	    		<p class="sucee">
+	    			<span class="su">正在处理</span>
+	    		</p>	
+	    		<p class="p">请耐心等待。</p>
+	    	#{/if}
+	    	#{elseif playItemDTO.captainId == userId && playItemDTO.playState == 3}
+	    		<p class="sucee">
+	    			<span class="su">投诉成功</span>
+	    		</p>	
+	    		<p class="p">经电竞侠客服专员查证，确认对方队伍爽约，您所在队伍直接获得本轮赛事胜利。</p>
+	    	#{/elseif}
+	    	#{elseif playItemDTO.captainId == userId && playItemDTO.playState == 3}
+	    		<p class="failed">
+	    			<span class="su">投诉失败</span>    <span class="widget" style="color:blue;" onclick="openImgPage('/m/match/getMyPlayImgs')">重新申请</span>
+	    		</p>	
+	    		<p class="p">${playItemDTO.imgBack}</p>
+	    	#{/elseif}
+	    	
+	    	#{if playItemDTO.againstCaptainId == userId && playItemDTO.againstPlayState == 2}
+	    		<p class="sucee">
+	    			<span class="su">正在处理</span>
+	    		</p>	
+	    		<p class="p">请耐心等待。</p>
+	    	#{/if}
+	    	#{elseif playItemDTO.againstCaptainId == userId && playItemDTO.againstPlayState == 3}
+	    		<p class="sucee">
+	    			<span class="su">投诉成功</span>
+	    		</p>	
+	    		<p class="p">经电竞侠客服专员查证，确认对方队伍爽约，您所在队伍直接获得本轮赛事胜利。</p>
+	    	#{/elseif}
+	    	#{elseif playItemDTO.againstCaptainId == userId && playItemDTO.againstPlayState == 4}
+	    		<p class="failed">
+	    			<span class="su">投诉失败</span> <span class="widget" style="color:blue;" onclick="openImgPage('/m/match/getMyPlayImgs')">[重新申请]</span>
+	    		</p>	
+	    		<p class="p">${playItemDTO.againstImgBack}</p>
+	    	#{/elseif}
+	    </div>
+	    
+	    <form id="form" class="fight" action="?">
+		<input id="schedulePlayId" type="hidden" name="schedulePlayId" value="${playItemDTO?.id}"/>
+		<input id="userType" type="hidden" value="${ userType }"/>
+		<input id="matchInfoId" type="hidden" name="matchInfoId" value="${matchInfoId}"/>
+		<input id="imgType" name="imgType" type="hidden" value="2"/>
+		<input name="entrance" type="hidden" value="1"/>
+		
+		#{if playItemDTO?.captainId == userId} 
+			<input id="squadId" type="hidden" name="squadId" value="${playItemDTO?.squadId}">
+		#{/if}
+		#{elseif playItemDTO?.againstCaptainId == userId}
+			<input id="squadId" type="hidden" name="squadId" value="${playItemDTO?.againstId}">
+		#{/elseif}
+		
+		#{if playItemDTO?.captainId == userId} 
+			<input id="curPlayState" type="hidden" value="${playItemDTO?.playState}">
+		#{/if}
+		#{elseif playItemDTO?.againstCaptainId == userId}
+			<input id="curPlayState" type="hidden" value="${playItemDTO?.againstPlayState}">
+		#{/elseif}
+		</form>
+	    
+    </div>
+    <div class="win-gift-rule fight-fault-rule">
+    	<div class="top-title top-title2"><h1>帮助指引</h1></div>
+    	<div class="text-des-p">
+	    	<p class="p">有任何疑问, 请联系客服:<a class="org" href="javascript:void(0);" onclick="openKKServer();">我是电竞侠</a></p>
+	    </div>
+    </div>
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script>
+	JSBridge.callNative("NineGameClient", "hideShareButton");
+	function openKKServer() {
+		if ($('#userType').val() == '3') {
+			JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+			JSBridge.callNative("NineGameClient", "HandlerKKLink", {"kklink": "kk://chat/enter?id=10002"});
+		} else {
+			window.alert("kk://chat/enter?id=10002");
+		}
+	}
+	
+	// 打开目标页
+	function openImgPage(action, imgType) {
+		$('#form').attr('action', action);
+		$('#form').submit();
+	}
+</script>
+</body>
+</html>

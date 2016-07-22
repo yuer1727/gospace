@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>#{if msg != null} ${msg} #{/if} #{else}出错了#{/else} </title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    
+</head>
+<body class="game-act">
+	<div class="none-tips">
+		<div class="none-con">
+			<div class="nothing"></div>
+			<div class="text">#{if errorDetail != null} ${errorDetail?.raw()} #{/if} #{else}出错了，请稍后再试试 #{/else}</div>
+		</div>
+	</div>
+</body>
+</html>

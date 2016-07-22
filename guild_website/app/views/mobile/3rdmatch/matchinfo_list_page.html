@@ -1,0 +1,13 @@
+#{list items:matchInfoList, as:'matchInfo' }
+      	<li>
+        	<a class="inner" href="/m/match/gift_rule.html?organizer=2&matchInfoId=${matchInfo.id}">
+          	<img src="${matchInfo.topImgUrl}" alt="">
+          	<div class="right">
+            	<p class="title">${matchInfo.title}</p>
+            	<p>状态: <span class="on">${matchInfo.status}</span></p>
+            	<p>奖励: ${matchInfo.awardType}</p>
+            	<p>时间: ${matchInfo.timeStr}</p>
+          	</div>
+        	</a>
+     	</li>
+#{/list}

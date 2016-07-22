@@ -1,0 +1,46 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+module:testrunner
+
+GET     /                                       App.Index
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       Static.Serve("public")
+
+# Catch all
+#*       /:controller/:action                    :controller.:action
+
+
+GET    /index.html                             Index.index
+GET    /sdk.html                               Index.SdkCooperate
+GET    /sdk-apply.html                         Index.SdkApply
+GET    /m/                                     Index.MobileIndex
+GET    /m/vote.html                            Index.MobileVote
+GET    /m/rule.html                            Index.MobileRule
+GET    /m/lapiao.html                          Index.MobileLaPiao
+
+#zyzz v1 start
+GET    /ziyou.html                             Index.ZiyouAd
+#POST   /ziyou_submit					       Index.ZiyouAdSubmit	
+
+GET    /m/ziyou.html                           Index.MobileZiYouAd
+GET    /m/ziyou_sign.html                      Index.MobileZiYouSign
+#POST   /m/ziyou_submit.html                    Index.MobileZiYouSubmit
+#zyzz v1 end
+
+
+GET     /con.html                               Connection.Conn
+GET     /apirequest.html                               Connection.Apirequest
+GET     /ApiToServer.html                               Connection.ApiToServer
+GET     /ApiTest.html                               Connection.ApiTest
+
+
+GET     /json.html                               JsonTest.JsonTester
+
+GET     /mem.html                               MemC.Conn
+

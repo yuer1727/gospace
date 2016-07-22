@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>电竞侠移动电竞大奖赛揭幕赛</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/public/css/pc/match/join.css?5fccec42ab">
+</head>
+<body>
+<!-- header begin -->
+<div class="header">
+  <div class="inner"><span class="logo">电竞侠</span></div>
+</div>
+<!-- header end -->
+<!-- content begin -->
+<div class="content">
+  <!-- breadcrumb begin -->
+  <ul class="breadcrumb">
+    <li class="first">1.选择报名赛事<b></b><i></i></li>
+    <li>2.验证手机<b></b><i></i></li>
+    <li class="active">3.填写报名信息<b></b><i></i></li>
+    <li class="last">4.完成<b></b><i></i></li>
+  </ul>
+  <!-- breadcrumb end -->
+
+  <div id="validation" class="join-wrap">
+    <form id="form" class="join-form" method="post" action="/match/postMatchApplyInfo">
+        <input type="hidden" id="matchInfoId" name="matchInfoId" value="${matchInfoDTO?.id}" />
+        <input type="hidden" id="userId" name="userId" value="${userId}"  />
+        <input type="hidden" id="mobile" name="mobile" value="${mobile}" />
+        <input type="hidden" id="from" name="from" value="${from}"  />
+        <input id="api-upload" type="hidden" value="/m/match/uploadImgBase64" />
+        <input id="upload-name" type="hidden" value="file" />
+        <input type="hidden" id="applyInputContent" name="applyInputContent" />
+        <input type="hidden" id="imgUploadContent" name="imgUploadContent" />
+    <div class="row j-field">
+        <label><span class="em">*</span> 战队简称:</label>
+        <div class="con">
+            <input type="text" class="input-text j-input" id="squadName" name="squadName" autofocus maxlength="20" data-required="true" value="${bingoSquadName}" />
+        <p class="msg"></p>
+        </div>
+    </div>
+    
+    #{list items:applyInputItemDTOs, as:'aii' }
+    <div class="row j-field" nameFlag="inputDataGroup">
+        <label>#{if aii.required == "true"}<span class="em">*</span> #{/if}${aii.title}:</label>
+        <div class="con">
+            <input type="hidden" nameFlag="title" value="${aii.title}"/>
+            <input type="text" value="${aii.content}" class="input-text j-input" nameFlag="content" value="" maxlength="${aii.maxLength}" data-required="#{if aii.required == 'true'} true #{/if}" data-rules="${aii.inputType}" data-msg='{"regexpMsg": "格式不正确"}' />
+        <p class="msg"></p>
+        </div>
+    </div>
+    #{/list}
+    
+    <div class="row j-field">
+        <label><span class="em">*</span> 游戏服务器:</label>
+        <div class="con con-select">
+            <div class="select-wrap">
+                <select id="matchServer" name="matchServer" class="select j-select" data-required="true" data-msg='{"requiredMsg": "必选项"}'>
+                    #{list items:serverList, as:'sl' }
+                    <option value="${sl}"  #{if bingoGameZone == sl} selected #{/if} >${sl}</option>
+                    #{/list}
+                </select>
+                <div class="icon-arrow"></div>
+            </div>
+        <p class="msg"></p>
+        </div>
+    </div>
+    #{list items:uploadImgItemDTOs, as:'iii' }
+    <div class="row j-field">
+        <label><span class="em">*</span>
+                ${iii.title}:</label>
+      <div class="con update-con upload" nameFlag="imgUploadGroup">
+      <input type="hidden" nameFlag="title" value="${iii.title}"/>
+        <div class="btn-update">点击上传</div>
+            <input type="file"  class="btn-file j-fileInput file-img" data-required="true" data-msg='{"requiredMsg": "请上传图片"}'>
+                <div class="show-update hide">
+                    <input nameFlag="fileRemoteUrl" type="hidden" class="required" />
+                    <img src="http://placehold.it/60x60" class="imgShow">
+                </div>
+        <p class="msg"></p>
+            </div>
+    </div>
+    #{/list}
+    <div class="con-tips">(若提交不成功联系QQ：17342925)</div>
+    <input type="hidden" id="subjectId" name="subjectId" value="${subjectId}">
+    <input type="hidden" id="matchId" name="matchId" value="${matchId}">
+    <input type="hidden" id="userType" name="userType" value="${userType}">
+    <input type="hidden" id="from" name="from" value="${from}">
+    <div class="btn-wrap">
+      <button type="submit" class="btn">提交</button>
+    </div>
+    </form>
+  </div>
+</div>
+<!-- content end -->
+
+#{include file="/common/footer.html" /}
+
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/seajs/sea.js"></script>
+<script src="/public/js/lib/dialog-plus-min.js"></script>
+
+<script>
+  var verNum = new Date().getTime();
+  seajs.config({
+    base: "/public/js/",
+    map: [[ '.js', '.js?v='+verNum+'' ]]
+  });
+  seajs.use("app/match/join.js");
+</script>
+</body>
+</html>

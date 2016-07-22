@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${matchInfoDTO?.title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+
+#{if userType != 1 && userType != 3}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+ #{/if}
+    
+    <!-- 切换tab -->
+	<nav class="tab-nav">
+		<span class="item" onclick="openUnfinishPage()">未完成</span>
+		<a href="#" class="item on">已完成</a>
+	</nav>
+	<input type="hidden" id="matchInfoId" name="matchInfoId" value="${matchInfoId}">
+	<input type="hidden" id="userType" name="userType" value="${userType}">
+	<ul class="fight-result-con">
+ 		#{set itemCount:0/}
+ 		#{list items: list, as:'playItemDTO' }
+ 		    #{set itemCount:itemCount + 1/}
+ 			<li>
+			<div class="up" onclick="openPlayDetail(${ playItemDTO?.id });">
+				<div class="ic left">
+					<div class="img" url="/m/match/guildShow?userId=${ playItemDTO?.userId }"><img class="ig" src="#{if playItemDTO?.squadLogoUrl } ${playItemDTO?.squadLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}"/></div>
+					<p class="name">${playItemDTO?.squadName}</p>
+				</div>
+				<div class="ic right">
+					<div class="img" url="/m/match/guildShow?userId=${ playItemDTO?.againstUserId }"><img class="ig" src="#{if playItemDTO?.againstLogoUrl } ${playItemDTO?.againstLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}"/></div>
+					<p class="name">${playItemDTO?.againstName}</p>
+				</div>
+				<div class="score">${playItemDTO?.score}:${playItemDTO?.againstScore}</div>
+			</div>
+			#{if playItemDTO?.reportState == 2 && roleType == 0}
+			<div class="bottom">
+				<a href="javascript:void(0);" class="side-btn" onclick="openKKServer();">申诉对战结果</a>
+			</div>
+			#{/if}
+			</li>
+ 		#{/list}
+ 		#{if itemCount == 0} 
+ 		    <div class="empty-content" >
+        		<img src="/public/images/mobile/back_empty.png" alt="">
+        		<p class="empty-tips">暂无完成对阵</p>
+        	</div>
+ 		#{/if}
+ 		</ul>
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+
+<!--提示浮层-->
+<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+	<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+	<script src="/public/js/mobile/match/placeholder.js"></script>
+    <script src="/public/js/mobile/match/showGuild.js"></script>
+    <script src="/public/js/mobile/match/djx_client_common.js"></script>
+	<script>
+	hideShareButton();
+	var roleType = ${roleType};
+	function alertWin(msg) {
+		$('#alert-win').show().find('.con').html(msg);
+	}
+	
+	function openKKServer() {
+		if (roleType != 0) {
+			alertWin('只有队长有操作权限!');
+			return;
+		}
+		
+		if ($('#userType').val() == '3') {
+			JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+			JSBridge.callNative("NineGameClient", "HandlerKKLink", {"kklink": "kk://chat/enter?id=10002"});
+		} else {
+			window.alert("kk://chat/enter?id=10002");
+		}
+		
+	}
+	
+	//打开对阵详情页
+	function openPlayDetail(id) {
+		JSBridge.isIos = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+		if (!JSBridge.isIos) {
+			JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		}
+		var title = "${matchAgainstListDTO?.matchInfoDTO?.title}";
+		JSBridge.callNative("NineGameClient", "openPlayDetailPage", {"path": "/m/match/schedulePlayDetail.html", "title": title, "id": id });
+	}
+	
+	//打开未完成页面
+	function openUnfinishPage() {
+		window.location.href="/m/match/getUnFinishPlayDetail?matchInfoId="+$('#matchInfoId').val();
+	}
+    </script>
+  
+  <script type="text/javascript">
+     $(function() {
+     $('input, textarea').placeholder();
+     showGuild();//异步加载点击战队头像事件
+     });
+  </script>
+</body>
+</html>

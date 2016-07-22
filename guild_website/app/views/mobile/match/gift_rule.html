@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  #{set matchId:matchInfoDTO?.id /}
+  #{if userType != 1 && userType != 3}
+  <title>规则</title>
+  #{/if}
+  #{else}
+  <title>${matchRakingAndAwardDTO?.matchInfoDTO?.title}</title>
+  #{/else}
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+  
+  <style>
+  	.action-fixed.active {
+  		display: block;
+  	}
+  	.btn-pic.btn-red.active {
+  		width: 95%;
+  		width:-moz-calc(100% - (20px));
+		width:-webkit-calc(100% - (20px));
+  		width: calc(100% - (20px));
+  	}
+  </style>
+</head>
+<body>
+  #{if userType != 1 && userType != 3 && !isShareToOut}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchRakingAndAwardDTO?.matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+  #{/if}
+  #{elseif userType != 1 && userType != 3 && isShareToOut}
+  		#{include file="mobile/match/share_head.html" /}
+  #{/elseif}
+  
+  #{if matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl }
+  	<div class="top">
+  <img src="${matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl}">
+     <div class="tag">
+     #{if matchInfoDTO?.area}
+      <span class="item">${matchInfoDTO?.area}</span>
+     #{/if}
+     #{if matchInfoDTO?.level}
+      <span class="item">${matchInfoDTO?.level}</span>
+     #{/if}
+     #{if matchInfoDTO?.spreadType}
+      <span class="item">${matchInfoDTO?.spreadType}</span>
+     #{/if}
+      #{list items:awardTypes, as:'at' }
+      <span class="item">${at?.name}</span>
+      #{/list}
+     
+    </div>
+  </div>
+  #{/if}
+  <ul class="act-nav">
+    <li class="on"><a href="#"><span class="in">赛规</span></a></li>
+    #{if organizer == null || organizer == 1}
+    <li><a href="/m/match/match.html?matchInfoId=${ matchRakingAndAwardDTO?.matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}"><span class="in">赛程</span></a></li>
+    #{/if}
+    <li><a href="/m/match/match_result.html?matchInfoId=${ matchRakingAndAwardDTO?.matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}&organizer=${organizer}"><span class="in">结果</span></a></li>
+    #{if userType != 3}
+    <li><a href="/m/match/recom_video.html?matchInfoId=${matchRakingAndAwardDTO?.matchInfoDTO?.id}#{if isShareToOut}&from=kkshare#{/if}&organizer=${organizer}"><span class="in">视频</span></a></li>
+    #{/if}
+  </ul>
+ <!-- 奖励、规则 -->
+ <div class="win-gift-rule">
+ <input type='hidden' id='userType' value='${userType}' />
+    #{if awardItemDTOs}
+    <div class="wrap wrap-jiangli">
+      <div class="top-title"><h1>赛事奖励</h1></div>
+      <ul class="gift-list">
+      #{list items:awardItemDTOs,as:'ai'}
+        <li>
+          <div class="item-gift">
+            <div class="pic"><img src="${ai.award_img_url}" width="90" height="90"></div>
+            <div class="name">${ai?.award_desc}</div>
+          </div>
+        </li>
+       #{/list}
+      </ul>
+    </div>
+    #{/if}
+     <!-- 直播平台 begin -->
+     #{if liveContentDTOs}
+    <div class="wrap wrap-platform">
+      <div class="top-title">
+        <h1>直播平台</h1>
+      </div>
+      <div class="platform-list">
+      #{list items:liveContentDTOs,as:'lc'}
+        <a href="${lc?.url}">${lc?.title}</a>
+       #{/list}
+      </div>
+    </div>
+    #{/if}
+    <!-- 直播平台 end -->
+    #{if matchRakingAndAwardDTO?.matchInfoDTO?.description}
+    ${matchRakingAndAwardDTO?.matchInfoDTO?.description?.raw()}
+    #{/if}
+    #{if stateType == 4}
+    <br/>
+    <br/>
+    <br/>
+    #{/if}
+    
+    <!-- 2016-03-23 新增报名限制类型2，不提供报名, 用户将看不到报名按钮 -->
+    #{if matchRakingAndAwardDTO?.matchInfoDTO?.applyLimit != 2}
+    #{if stateType == 1}
+    <div class="action-fixed">
+			<div class="btn-pic btn-dis"> ${applyTime} 开放报名</div>
+	</div>
+    #{/if}
+    
+    #{if stateType == 2}
+    <div class="action-fixed">
+		<a href="javascript:void(0);" class="btn-pic btn-dis">已签到，请耐心等候抽签结果</a>
+	</div>
+    #{/if}
+    
+    #{if stateType == 3}
+    	#{if userType == 1 || userType == 3}
+    	<div class="action-fixed">
+			<div class="btn-pic btn-dis"> ${ signupTime }签到，未签到视为放弃比赛  </div>
+		</div>
+    	#{/if}
+    	#{else}
+   			<div class="action-fixed">
+				<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="btn-pic btn-red" id="send">下载电竞侠 领取比赛入场劵</a>
+			</div>
+		#{/else}
+    #{/if}
+    
+    #{if stateType == 4}
+    	#{if userType == 1 || userType == 3 }
+   	 	<div class="action-fixed active" id="oldGetSignup">
+		 	<input type="hidden"  id="ajaxUrl" value="/m/match/signupMatch?matchInfoId=${matchInfoDTO?.id}&squadId=${matchInfoDTO?.squadId}"/>
+		 	<a class="btn-pic btn-red active" id="signupMatch">马上签到</a>
+		 	<div class="act-rule" style="font-size:12px;padding-top:10px">
+      			签到，即表示你同意<a href="/m/match/match_protocol.html?id=${matchInfoDTO?.id}">《电竞侠参赛协议》</a>
+      		</div>
+		</div>
+		<div class="action-fixed" id="signupedMatch">
+			<div class="btn-pic btn-dis">已签到，请耐心等候抽签结果 </div>
+		</div>
+		#{/if}
+		#{else}
+   			<div class="action-fixed">
+				<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="btn-pic btn-red" id="send">下载电竞侠 领取比赛入场劵</a>
+			</div>
+		#{/else}
+    #{/if}
+    
+    
+    #{if stateType == 6}
+        <div class="action-fixed">
+            <a href="/m/match/sign.html?matchInfoId=${matchInfoDTO?.id}&userId=${userId}&from=kk" class="btn-pic" id="send">马上报名</a>
+        </div>
+    #{/if}
+    
+    #{if stateType == 7}
+    <div class="action-fixed">
+		<a href="javascript:void(0);" class="btn-pic btn-dis">报名已结束</a>	
+	</div>
+    #{/if}
+    
+    #{if stateType == 8}
+    <div class="action-fixed">
+    	<a href="/m/matchTracker/invitation?matchInfoId=${matchInfoDTO?.id}&squadId=${matchInfoDTO?.squadId}&from=${from}" class="btn-pic btn-red" id="send">邀请好友组队</a>
+	</div>
+    #{/if}
+    
+    #{if stateType == 9}
+    <div class="action-fixed">
+    	<a href="javascript:void(0);" class="btn-pic btn-dis">报名时间已过,组队失败</a>	
+	</div>
+    #{/if}
+    
+    #{/if}
+    
+<div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert2">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    <a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+</div>
+
+<div id="alert-win" class="mask-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+	<script src="/public/js/mobile/match/showGuild.js"></script>
+	<script src="/public/js/mobile/match/signupMatch.js"></script>
+</div>
+</body>
+</html>

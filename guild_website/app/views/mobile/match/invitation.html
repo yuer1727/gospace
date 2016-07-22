@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>发送邀请函</title>
+  <link rel="stylesheet" href="/public/css/mobile/match/djx-match.css?b89d7fd584">
+</head>
+<body>
+  <header class="banner">
+    <img src="${matchInfoDTO?.topImgUrl}">
+  </header>
+
+  <section class="invitation-page content">
+    <div class="card">
+      <h2 class="title">邀请函</h2>
+      <p class="subtitle">Invitation</p>
+      <div class="text">
+        <p>Hi，我已为${respDTO?.squadName}报名参加</p>
+        <p class="active-text">${matchInfoDTO?.title}</p>
+        <p>${matchInfoDTO?.applyEndTimeStr}前邀请${kkGameMode?.fightType - 1}个好友填写参赛信息，才能报名成功。</p>
+      </div>
+      <p class="name">—${respDTO?.captainNickName}</p>
+    </div>
+    #{if userType == 1 || userType == 3}
+        #{if respDTO?.roleType == 0}
+    		<a href="#" class="btn btn-ok" onclick="callShare()">发送邀请函给队友</a>	
+    	#{/if}
+    	#{elseif respDTO?.roleType == 1}
+    	    <a href="#" class="btn btn-ok btn-disabled" >已报名</a>
+    	#{/elseif}
+    	#{elseif (kkGameMode?.fightType - respDTO?.totalCount - 1) == 0}
+    	    <a href="#" class="btn btn-ok btn-disabled" >报名人数已满</a>
+    	#{/elseif}
+    	#{else}
+    		<a href="/m/match/sign_member.html?squadId=${respDTO?.squadId}" class="btn btn-ok">马上报名</a>
+    	#{/else}
+    #{/if} 
+    #{else}
+    	#{if (kkGameMode?.fightType - respDTO?.totalCount - 1) == 0}
+    	    <a href="#" class="btn btn-ok btn-disabled" >报名人数已满</a>
+    	#{/if}
+    	#{else}
+    		<a href="/m/match/sign_member.html?squadId=${respDTO?.squadId}" class="btn btn-ok">马上报名</a>	
+    	#{/else}
+    #{/else}
+    
+    <div class="links">
+  	  #{if userType == 1 || userType == 3}
+  	  		 <a href="/m/matchTracker/groupingDetail?matchInfoId=${matchInfoDTO?.id}&squadId=${respDTO?.squadId}" class="fl">报名情况</a>
+      #{/if} 
+      #{else}
+      	      <a href="#" onclick="openDownloadKK()" class="fl">报名情况</a>
+      #{/else}  
+      <a href="/m/match/gift_rule.html?matchInfoId=${matchInfoDTO?.id}&visitSource=invitationPage" class="fr rule-link">规则详情&gt;</a>
+    </div>
+    
+    <div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert2">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    <a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+	</div>
+    
+  </section>
+</body>
+
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script src="/public/js/mobile/match/showGuild.js"></script>
+<script src="/public/js/mobile/match/djx_client_common.js"></script>
+
+
+<script>
+    hideShareButton();
+
+	function callShare() {
+		JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+		if (!JSBridge.isIOS) {
+			JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		}
+		var host = 'http://' + window.location.host;
+		var url = host + "/m/matchTracker/invitation?matchInfoId=${matchInfoDTO?.id}&squadId=${respDTO?.squadId}";
+		JSBridge.callNative("NineGameClient",
+				"share",{shareInfo : {title:"${matchInfoDTO?.title}", content:"我已为${respDTO?.squadName}战队报名参赛，邀请你组队参赛。",shareUrl:url, imgUrl:"${matchInfoDTO?.logoImgUrl}",platform:"qq,qzone,wechat,wechat_timeline,sina,more"}});
+	}
+	
+	
+</script>
+</html>

@@ -1,0 +1,32 @@
+#{extends 'common/mobile_main.html' /}
+#{set title:'自由之战3F职业联赛-KK语音' /}
+
+#{set 'moreStyles'}
+    <link rel="stylesheet" type="text/css" href="/public/css/mobile/ziyou_v2.css">
+#{/set}
+
+#{set 'moreScripts'}
+    <script src="/public/js/mobile/zyzz_v2/home.js"></script>
+#{/set}
+
+<header class="top">
+    <img src="/public/images/mobile/top.jpg" width="100%">
+    <img src="/public/images/mobile/top_title.jpg" width="100%">
+</header>
+<ul class="top-nav">
+    <li><a href="@{Activity.mobileZyzzIndex}">首页</a></li>
+    <li class="on"><a href="javascript:void(0);">精英战队</a></li>
+    <li><a href="@{Activity.zyzzVedio}">精彩视频</a></li>
+    <li><a href="@{Activity.mobileZyzzIntro}">赛事说明</a></li>
+    <li><a href="@{Activity.zyzzApply}">战队报名</a></li>
+</ul>
+<ul class="score-list">
+    #{list items:teamList, as:'team'}
+    <li class="item-score">
+        <div class="pic"><img src='${team["avatarUrl"]}' width='55' height='55'></div>
+        <div class="con"><div class="name">${team["teamName"]}</div></div>
+        <div class="win">${team["winCount"]}胜</div>
+        <div class="lose">${team["loseCount"]}负</div>
+    </li>
+    #{/list}
+</ul>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!-- 投诉爽约提交图片界面 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>上传对阵结果凭证</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	<p class="my-fight-pic-p">对战结束后1个小时内上传对战结果截图</p>
+	<form id="form" onsubmit="return false;">
+	<input id="api-upload" type="hidden" value="/m/match/uploadImg">
+	<input id="api-upload-base64" type="hidden" value="/m/match/uploadImgBase64">
+	<input id="api-submit" type="hidden" value="/m/match/submitImgs">
+	<input id="upload-name" type="hidden" value="file">
+	<input name="schedulePlayId" type="hidden" value="${schedulePlayId}">
+	<input name="squadId" type="hidden" value="${squadId}">
+	<input name="imgType" id="imgType" type="hidden" value="1">
+	<input id="maxImgCount" type="hidden" value="${maxImgCount}">
+    
+	<div class="my-fight-pic" id="img-list">
+		<!-- 已上传列表  -->
+		#{set count:0/}
+		#{list items : list, as:'item' } 
+			#{set count:count+1/}
+			<div class="img demo-pic">
+			    #{if imgUrl != null && imgUrl != '' && count == 1 }  <!-- 为了示意图的效果 count == 1  -->
+				<img class="ig" src="${imgUrl}"><p align="center">示例图</p>
+ 	            #{/if}
+				<img class="ig" src="${item.imgUrl}"/>
+ 			</div>
+		#{/list}
+		
+		#{if count < maxImgCount}
+		<div class="up-load" id="uploadDiv">
+			<input id="file-btn" type="input" class="file-input" style="display:none" />
+			<input id="file-input" type="file" multiple class="file-input" accept="image/*">
+		</div>
+		#{/if}
+	</div>	
+	<div><span style="color:red;" id="errorTips"></span></div>
+	
+	<div class="action-fixed">
+		<div id="submit-btn" class="btn-pic">
+				提交
+		</div>
+	</div>
+	</form>
+	
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+
+<!--提示浮层-->
+<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/canvas-to-blob.min.js"></script>
+<script src="/public/js/mobile/match/play_img_upload.js"></script>
+<script>
+	JSBridge.callNative("NineGameClient", "hideShareButton");
+</script>
+  
+</body>
+</html>

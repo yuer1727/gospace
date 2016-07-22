@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>报名情况</title>
+  <link rel="stylesheet" href="/public/css/mobile/match/djx-match-spec.css?167a21531c">
+</head>
+<body>
+  <section class="join-page">
+    <header class="tips">目前已有${respDTO?.totalCount}位队员，
+    	#{if (kkGameMode?.fightType - respDTO?.totalCount - 1) == 0}
+    		组队成功
+    	#{/if}
+    	#{else}
+    		再邀请${kkGameMode?.fightType - respDTO?.totalCount - 1}位即可参与比赛
+    	#{/else}
+    </header>
+    <ul class="list">
+      <li onclick="openClientPage('kk://page/goto?target=memberHome&id=${respDTO?.captainUserId}')">
+        <img src="#{if respDTO?.captainUserLogo!=null && respDTO?.captainUserLogo!=''}${respDTO?.captainUserLogo}#{/if}#{else}/public/images/mobile/default_user_logo.png#{/else}" />
+        <p class="name">${respDTO?.captainNickName}</p>
+        <div class="right">
+          <p class="tit green">发起组队</p>
+          <p class="time">${utils.DateUtils.format(respDTO?.ctime, "yyyy/MM/dd HH:mm")}</p>
+        </div>
+      </li>
+      #{list items:respDTO?.list, as:'item' }
+      	<li onclick="openClientPage('kk://page/goto?target=memberHome&id=${item.userId}')">
+      		<img src="#{if item.logoUrl!=null && item.logoUrl!=''}${item.logoUrl}#{/if}#{else}/public/images/mobile/default_user_logo.png#{/else}"  />
+        	<p class="name">${item.nickName}</p>
+        	<div class="right">
+          		<p class="tit">参与组队</p>
+          		<p class="time">${utils.DateUtils.format(item.ctime, "yyyy/MM/dd HH:mm")}</p>
+        	</div>
+      	</li>
+      #{/list}
+    </ul>
+  </section>
+</body>
+
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script src="/public/js/mobile/match/djx_client_common.js"></script>
+<script>
+	hideShareButton();
+</script>
+</html>

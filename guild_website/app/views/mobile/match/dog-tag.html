@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>参赛狗牌</title>
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/dog-tag.css">
+</head>
+<body>
+  <input type="hidden" id="matchInfoId" value="${squadDetail.matchId}" />
+  <input type="hidden" id="squadId" value="${squadDetail.id}" />
+  <section class="dog-tag-page">
+    <header class="dog-tag-hd">
+      <img class="bg" src="/public/images/mobile/match/dog_bg.jpg" alt="">
+      <div class="box">
+        <h1 class="box-title">电竞侠</h1>
+        <h2 class="title">${matchInfoDTO.title}</h2>
+        <span class="stitle">参赛昵称</span>
+        <div class="names">
+          <ul class="name-list">
+            <li>${memberRespDTO.captainNickName}</li>
+            #{list items:memberRespDTO?.list, as: 'member'}
+            #{if member.nickName == null}
+            <li>未知用户名</li>
+            #{/if}
+            #{else}
+            <li>${member.nickName}</li>
+            #{/else}
+            #{/list}
+          </ul>
+        </div>
+      </div>
+    </header>
+    <section class="dog-tag-bd">
+      <p class="time">签到时间:${sigTime}</p>
+      <!-- ** data-time距离签到开始时间的时间戳 ** -->
+      #{if state == 0}
+      <button id="countdown" class="btn btn-cancel btn-disabled" disabled data-time="${waitMills}">签到</button>
+      #{/if}
+      #{if state == 1}
+      <button id="countdownNow" class="btn btn-cancel">签到</button>
+      #{/if}
+      #{if state == 2}
+      <button class="btn btn-cancel btn-disabled" disabled>签到已成功</button>
+      #{/if}
+      #{if state == 3}
+      <button class="btn btn-cancel btn-disabled" disabled>过期未签到</button>
+      #{/if}
+      #{if squadDetail.contactGroupId != null && now < matchInfoDTO.matchEndTime && state != 4 && matchInfoDTO.applyType != null && matchInfoDTO.applyType != 0}
+      <a id="groupDetail" href="#" onclick="openClientPage('kk://chat/enterGroup?id=${squadDetail.contactGroupId}')"><span class="btn btn-cancel">参赛选手群</span></a>
+      #{/if}
+      <p class="tr"><a href="/m/match/gift_rule.html?matchInfoId=${matchInfoDTO.id}&visitSource=${visitSource}" class="rule-link">规则详情&gt;</a></p>
+    </section>
+  </section>
+</body>
+
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script src="/public/js/mobile/match/countdown.js"></script>
+<script src="/public/js/mobile/match/djx_client_common.js"></script>
+<script type="text/javascript">
+	$(function() {
+		enterGroupSupport(); //队内私聊群支持方法
+	});
+</script>	
+</html>

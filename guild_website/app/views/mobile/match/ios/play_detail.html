@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{if userType == 1}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>对战信息</title> #{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+
+	<form id="form" onsubmit="return false;" class="fight">
+		<input id="api-upload" type="hidden" value="/m/match/uploadImg">
+		<input id="api-submit" type="hidden" value="/m/match/createImgsAndVideo">
+		<input id="upload-name" type="hidden" value="file">
+		<input type="hidden" name="schedulePlayId" value="${playItemDTO?.id}">
+		#{if playItemDTO?.captainId == userId} 
+			<input type="hidden" name="squadId" value="${playItemDTO?.squadId}">
+		#{/if}
+		#{elseif playItemDTO?.againstCaptainId == userId}
+			<input type="hidden" name="squadId" value="${playItemDTO?.againstId}">
+		#{/elseif}
+
+		<div class="title">${playItemDTO?.playTitle}</div>
+		<div class="time-con">
+			<div class="date">${playItemDTO?.playTimeStr}</div>
+		</div>
+		<div class="title">对战</div>
+		<div class="fight-con">
+			<div class="fight1">
+			<div class="pic show_guild">
+			    <img src="#{if playItemDTO?.squadLogoUrl } ${playItemDTO?.squadLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+			</div>
+				<div class="name">${playItemDTO?.squadName}</div>
+				<div class="info">队长:${playItemDTO?.captainName}</div>
+			</div>
+			<div class="bg-vs"></div>
+			<div class="fight2">
+			<div class="pic show_guild">
+			    <img src="#{if playItemDTO?.againstLogoUrl }${playItemDTO?.againstLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+			</div>
+				<div class="name">${playItemDTO?.againstName}</div>
+				<div class="info">队长:${playItemDTO?.againstCaptainName}</div>
+			</div>
+		</div>
+		<div class="title">对战服务器</div>
+		<div class="server-con">${playItemDTO?.matchServer}</div>
+			#{if showType==0 || showType==1}
+			<div class="title">对战结果</div>
+			<div class="result-con">
+				#{if userId > 0 && showType==0}
+					<div id="file-btn" class="btn-pic" style="border: 1px solid #E5E5E5;background-color:#fff;">
+						<input id="file-input" type="file" multiple class="file-input" accept="image/*">
+						<span style="color: #000;">上传比赛截图</span>
+					</div>
+				#{/if}
+				#{elseif userId <= 0 || showType==1}
+					<div id="file-btn" class="btn-pic-disable">
+						<!--  <input id="file-input" type="file" multiple class="file-input" accept="image/*"> -->
+						<span>上传比赛截图</span>
+					</div>
+				#{/elseif}
+				<ul id="img-list" class="img-list">
+				
+				</ul>
+				<div class="tips">注意:比赛结束后1个小时内上传比赛截图</div>
+			</div>
+			#{/if}
+			<div class="title">对战视频</div>
+			<div id="video-con" class="video-con">
+				<div class="form-group">
+					<input type="text" class="input" placeholder="请输入视频地址">
+					<a href="javascript:void(0);" id="add-video">+继续添加</a>
+				</div>
+			</div>
+			#{if userId > 0 && (showType==0 || showType==2)}
+				<div class="action">
+					<input id="submit-btn" type="submit" value="提交" class="submit-btn btn-pic">
+				</div>
+			#{/if}
+			#{elseif userId <= 0 || showType==1}
+				<div class="action">
+					<input id="submit-btn" type="submit" value="提交" class="submit-btn-disable btn-pic-disable" disabled>
+				</div>
+			#{/elseif}
+			<div class="act-tips">
+				温馨提示：<br />
+				1.视频地址仅支持优酷视频网站地址;<br>
+				2.后续每轮比赛时间及对手请在活动页或我>我的赛事进行查询;<br />
+				3.点击对手队长昵称，可以直接联系对方;<br/>
+				4.有任何疑问，请联系<a href="#" onclick="openKKServer();">电竞侠客服</a>
+			</div>
+	</form>
+
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+
+<!--提示浮层-->
+<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+    <input id="userType" type="hidden" value="${ userType }">
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+	<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+	<script src="/public/js/mobile/match/canvas-to-blob.min.js"></script>
+	<script src="/public/js/mobile/match/fight.js"></script>
+	<script src="/public/js/mobile/match/placeholder.js"></script>
+    <script src="/public/js/mobile/match/showGuild.js"></script>
+  <script type="text/javascript">
+     $(function() {
+     $('input, textarea').placeholder();
+     showGuild();//异步加载点击战队头像事件
+     });
+  </script>
+</body>
+</html>

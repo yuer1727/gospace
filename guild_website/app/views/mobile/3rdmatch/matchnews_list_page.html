@@ -1,0 +1,9 @@
+#{list items:newsList, as:'news' }
+    <li>
+      <a href="/m/match/thirdparty/newsDetail?newsId=${news.id}">
+        <h2 class="title">${news.title}</h2>
+        <p class="time">${news.ctime}</p>
+        <img src="${news.imgUrl}" alt="">
+      </a>
+    </li>
+#{/list}

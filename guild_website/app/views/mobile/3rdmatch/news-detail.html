@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>资讯详情</title>
+  <link rel="stylesheet" href="/public/css/mobile/3rdmatch/djx-match-spec.css?e8f7c5de08">
+</head>
+<body>
+  <section class="article">
+    <header class="article-hd">
+      <h1 class="title">${news.title}</h1>
+      <p class="info">${news.timeStr}</p>
+    </header>
+    <section class="article-bd">
+      #{if news?.imgUrl}
+      <p style="margin: 10px 0; text-align: center;"><img src="${news.imgUrl}" alt=""></p>
+      #{/if}
+      <p style="text-indent: 2em;">${news.content.raw()}</p>
+    </section>
+  </section>
+</body>
+
+<script src="/public/js/mobile/match/zepto.js"></script>
+</html>

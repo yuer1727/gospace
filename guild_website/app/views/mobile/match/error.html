@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>#{if msg != null} ${msg} #{/if} #{else}出错了#{/else} </title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/game.css">
+</head>
+<body class="game-act">
+	#{if userType != 1}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+	#{/if}
+	
+	<div class="none-tips">
+		<div class="none-con">
+			<div class="nothing"></div>
+			<div class="text">#{if errorDetail != null} ${errorDetail?.raw()} #{/if} #{else}出错了，请退出稍后再试试 #{/else}</div>
+		</div>
+	</div>
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+</body>
+</html>

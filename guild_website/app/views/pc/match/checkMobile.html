@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>电竞侠移动电竞大奖赛揭幕赛</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/public/css/pc/match/join.css?5fccec42ab">
+</head>
+<body>
+<!-- header begin -->
+<div class="header">
+  <div class="inner"><span class="logo">电竞侠</span></div>
+</div>
+<!-- header end -->
+<!-- content begin -->
+<div class="content">
+  <!-- breadcrumb begin -->
+  <ul class="breadcrumb">
+    <li class="first">1.选择报名赛事<b></b><i></i></li>
+    <li class="active">2.验证手机<b></b><i></i></li>
+    <li>3.填写报名信息<b></b><i></i></li>
+    <li class="last">4.完成<b></b><i></i></li>
+  </ul>
+  <!-- breadcrumb end -->
+
+  <div id="verifyMobile" class="join-wrap">
+    <form id="form" class="join-form" method="post" action="/match/createKKAcount">
+    <input type="hidden" id="subjectId" name="subjectId" value="${subjectId}" >
+    <input type="hidden" id="matchId" name="matchId" value="${matchId}">
+    <input type="hidden" id="userType" name="userType" value="${userType}">
+    <input type="hidden" id="from" name="from" value="${from}">
+    <div class="row j-field">
+        <label>手机号</label>
+        <div class="con">
+            <input type="text" id="mobile" class="input-text j-input" name="mobile" value="${mobile}" autofocus maxlength="11" data-required="true" data-rules="mobile" data-msg='{"requiredMsg": "请输入手机号", "regexpMsg": "手机号格式不正确"}' />
+        <p class="msg"></p>
+        </div>
+    </div>
+    <div class="row j-field">
+        <label>验证码</label>
+      <div class="code-wrap">
+            <div class="con">
+                <input type="text" id="code" class="input-text j-input" name="code" value="" maxlength="6" data-required="true" data-rules="number" data-msg='{"requiredMsg": "请输入验证码", "regexpMsg": "验证码格式不正确"}' />
+          <p class="msg"></p>
+            </div>
+        <button type="button" id="getMsgCode" class="getcode" data-url="/match/requestVerifyCode">获取验证码</button>
+      </div>
+    </div>
+    <div class="btn-wrap">
+      <button type="submit" class="btn">下一步</button>
+    </div>
+    </form>
+  </div>
+
+  <!-- 重复报名提示 -->
+  <div class="tips-wrap hide">
+    <h2 class="title">你已报名<span id="name"></span>赛事，无需重新报名！</h2>
+    <p>请于xx进入电竞侠进行签到，确认参赛。</p>
+    <div class="qrcode">
+      <img src="/public/images/pc/match/qrcode_240x240.png" alt="二维码">
+    </div>
+  </div>
+</div>
+<!-- content end -->
+#{include file="/common/footer.html" /}
+
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/seajs/sea.js"></script>
+<script src="/public/js/lib/dialog-plus-min.js"></script>
+<script>
+  var verNum = new Date().getTime();
+  seajs.config({
+    base: "/public/js/",
+    map: [[ '.js', '.js?v='+verNum+'' ]]
+  });
+  seajs.use("app/match/join.js");
+  var errorDetail = '${errorDetail}';
+  if( errorDetail.length > 0){
+      errorTips(errorDetail);
+  }
+  
+//错误提示
+  function errorTips(msg) {
+    if ($('totast').length) return;
+    var $totast = $('<div class="totast"><span class="error">' + msg + '<span></div>');
+    $('body').append($totast);
+    setTimeout(function() {
+      $totast.remove();
+    }, 1500);
+  }
+</script>
+</body>
+</html>

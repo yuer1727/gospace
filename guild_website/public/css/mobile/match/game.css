@@ -1,0 +1,45 @@
+body, div, p, h1, h2, h3, ul, ol { padding: 0; margin: 0; }
+
+ol, ul, li { list-style: none; }
+
+body { font: 12px/1 "Droid Sans Fallback" "Rounded MT Bold", tahoma, Arial, "\5B8B\4F53", sans-serif; color: #333; min-width: 320px; background-color: #1F1F1F; }
+
+.top-bar { height: 48px; position: relative; z-index: 20; }
+.top-bar .icon-home { display: block; width: 32px; height: 32px; line-height: 500px; overflow: hidden; background-image: url(/public/images/mobile/match/icon.png); background-size: 32px auto; -webkit-background-size: 32px auto; position: absolute; left: 10px; top: 10px; }
+.top-bar .icon-down { display: block; width: 32px; height: 32px; line-height: 500px; overflow: hidden; background-image: url(/public/images/mobile/match/icon.png); background-size: 32px auto; -webkit-background-size: 32px auto; background-position: 0 -35px; position: absolute; right: 10px; top: 10px; }
+.top-bar .icon-vs { display: block; width: 32px; height: 32px; line-height: 500px; overflow: hidden; background-image: url(/public/images/mobile/match/icon.png); background-size: 32px auto; -webkit-background-size: 32px auto; background-position: 0 -70px; position: absolute; left: 10px; top: 10px; }
+
+.game-list { margin: 0 14px; }
+.game-list li { margin-bottom: 13px; }
+.game-list li img { border: 1px solid #363636; -webkit-border-radius: 2px; border-radius: 2px; }
+
+.game-act { background: #FFF; }
+.game-act .top-bar { background-color: #1F1F1F; }
+
+.game-tag { display: -webkit-box; height: 48px; line-height: 48px; border-bottom: 1px solid #e43601; background-color: #FFFFFF; position: relative; z-index: 20; }
+.game-tag li { display: block; -webkit-box-flex: 1.0; font-size: 16px; text-align: center; }
+.game-tag .current { color: #e43601; border-bottom: 1px solid #e43601; }
+
+.game-act-list { overflow: hidden; }
+.game-act-list li { height: 80px; border-bottom: 1px solid #E5E5E5; -webkit-box-sizing: border-box; padding: 10px; display: -webkit-box; -webkit-box-align: center; }
+.game-act-list li a { height: 80px; border-bottom: 1px solid #E5E5E5; -webkit-box-sizing: border-box; padding: 10px; display: -webkit-box; -webkit-box-align: center; text-decoration: none; }
+.game-act-list .pic { width: 90px; height: 60px; overflow: hidden; }
+.game-act-list .con { -webkit-box-sizing: border-box; padding-left: 10px; -webkit-box-flex: 1; }
+.game-act-list .name { font-size: 16px; color: #333; padding-bottom: 7px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.game-act-list .time { font-size: 12px; color: #999; }
+.game-act-list .icon-start { font-size: 10px; color: #FFF; line-height: 15px; height: 15px; padding: 0 3px; background-color: #00B722; border-radius: 2px; margin-right: 4px; vertical-align: middle; display: inline-block; }
+.game-act-list .icon-end { font-size: 10px; color: #FFF; line-height: 15px; height: 15px; padding: 0 3px; background-color: #CCCCCC; border-radius: 2px; margin-right: 4px; vertical-align: middle; display: inline-block; }
+.game-act-list .icon-sign { font-size: 10px; color: #FFF; line-height: 15px; height: 15px; padding: 0 3px; background-color: #FF6600; border-radius: 2px; margin-right: 4px; vertical-align: middle; display: inline-block; }
+.game-act-list .icon-prepare { font-size: 10px; color: #FFF; line-height: 15px; height: 15px; padding: 0 3px; background-color: #ffbb00; border-radius: 2px; margin-right: 4px; vertical-align: middle; display: inline-block; }
+
+.list-none-data { line-height: 200px; text-align: center; height: 200px; font-size: 16px; color: #999; }
+
+.loading { line-height: 43px; font-size: 14px; color: #666; text-align: center; -webkit-box-sizing: border-box; height: 43px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-box-pack: center; -webkit-box-align: center; background: #f5f5f5; overflow: hidden; vertical-align: middle; }
+
+.loading .item { width: 100%; color: #666; }
+
+.none-tips { position: fixed; left: 0; top: 0; right: 0; bottom: 0; display: -webkit-box; -webkit-box-pack: center; -webkit-box-align: center; }
+.none-tips .none-con { width: 135px; padding-bottom: 10px; text-align: center; }
+.none-tips .none-con .nothing { width: 135px; height: 125px; background-image: url(/public/images/mobile/match/404.png); background-size: 135px auto; -webkit-background-size: 135px auto; }
+.not-finish { text-align:center;position: fixed;left: 50%;top: 50%; margin-left: -150px; margin-top: -150px;}
+.none-tips .none-con .text { padding-top: 10px; font-size: 14px; color: #aaaaaa; }

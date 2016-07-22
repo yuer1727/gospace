@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>资讯列表</title>
+  <link rel="stylesheet" href="/public/css/mobile/3rdmatch/gamezone.css?0cd2cc3a2c">
+</head>
+<body>
+  <input type='hidden' id='orgId' value='${orgId}' />
+  <input type='hidden' id='pageNO' value='${pageNO}' />
+  <input type='hidden' id='pageSize' value='${pageSize}' />
+  <ul id="ajaxContainer" class="news-list">
+    #{list items:newsList, as:'news' }
+    <li>
+      <a href="/m/match/thirdparty/newsDetail?newsId=${news.id}">
+        <h2 class="title">${news.title}</h2>
+        <p class="time">${news.timeStr}</p>
+        <img src="${news.imgUrl}" alt="">
+      </a>
+    </li>
+    #{/list}
+  </ul>
+  <div class="module-more loading" id="loading">
+			<div id="loadingTip" class="item"><span class="o-modify-pull">加载更多</span></div>
+			<div id="noMoreTip" class="item">对不起，已经没有下一页数据！</div>
+			<div id="errorTip" class="item">网络繁忙，点击重试</div>
+			<div id="moreBtn" class="item"><span class="o-modify-pull">加载更多</span></div>
+	</div>
+</body>
+
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/scroll_bottom_load.js"></script>
+<script type="text/javascript" src="/public/js/mobile/3rdmatch/matchnews_ajax_list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/zepto_touch_ai.js"></script>
+<script>
+	$(document).ready(function() {
+		var ajaxList = initLoad;
+		ajaxList()
+	});
+</script>
+</html>

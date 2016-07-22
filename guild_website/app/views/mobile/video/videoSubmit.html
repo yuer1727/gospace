@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>视频提交</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/video/video.css">
+</head>
+<body>
+  <form class="video-form" id="form">
+    <!-- 填写视频地址 -->
+    <div class="mod-con add-con">
+      <div class="hd">
+        <div class="title">视频地址</div>
+        <div class="info">仅支持上传优酷地址</div>
+      </div>
+      <div class="bd">
+        <div class="input-con">
+            <input type="text" class="input-text check_input" placeholder="请输入视频地址" id="checkvideo" name="video_url"/>
+        </div>
+        <input type="hidden" class="input_tmp hide" name="video_url" />
+      </div>
+    </div>
+		
+    <!-- 选择游戏 -->
+    <div class="mod-con first-con">
+      <div class="hd">
+        <div class="title">游戏</div>
+      </div>
+      <div class="bd">
+         <ul class="item-list">
+          #{list items: games?.item, as:'item' }
+           <li data-id="${item.gameId}" data-name="kk_game_id" data-url="/m/video/gameCategoryProps?gameId=${item.gameId}" class="choose_game" data-has="0"><span class="it">${item.name}</span></li>	 
+           #{/list}
+            <input type="hidden" class="input_tmp hide" name="kk_game_id" id="checkgame"/>
+         </ul>
+      </div>
+    </div>
+		
+    <!-- 分类 -->
+    <div class="mod-con block_wrap" id="sonWrap">
+      <div class="hd">
+        <div class="title">视频分类</div>
+      </div>
+      <div class="bd" id="sonBlock">
+				<!-- 放置分类属性 -->
+      </div>
+    </div>
+		
+    <!-- 选择属性 -->
+    <div class="mod-con block_wrap" id="valueWrap">
+      <div class="hd">
+        <div class="title" id="valueTit"></div>
+      </div>
+      <div class="bd" id="valueBlock">
+				<!-- 放置子属性 -->
+      </div>
+    </div>
+		
+		<!-- 提交 -->
+		<div class="btns-wrap">
+			<input type="button" class="btn-sub" value="提交" id="toSubmit" data-url="/m/video/submitVideo" />
+		</div>
+		<p class="bot-note">温馨提示：可通过QQ811156264，将视频发送离线文件，并回复视频的游戏名称、你的电竞侠号，上传成功后通过QQ通知。</p>
+  </form>
+
+	<!-- 弹窗 -->
+	<div class="mod-popup" id="popup">
+		<div class="mod-popup-bg popup_close"></div>
+		<div class="popup-container">
+			<p class="header">温馨提示</p>
+			<p class="text-content" id="pop_msg"></p>
+			<div class="btns-wrap">
+				<span class="btn-sub popup_close">我知道了</span>
+			</div>
+		</div>
+	</div>
+	
+	
+</body>
+
+<script type="text/javascript" src="/public/js/mobile/match/zepto.min.js"></script>
+<script type="text/javascript" src="/public/js/mobile/video/video.js"></script>
+
+</html>

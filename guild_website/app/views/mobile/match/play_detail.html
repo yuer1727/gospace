@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{if userType == 1 || userType==3}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>对战信息</title> #{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/fight.css?2ae5fe8848">
+</head>
+<body>
+
+  <!-- 切换tab -->
+  <nav class="tab-nav">
+		<a href="#" class="item on">未完成</a>
+		<span class="item" onclick="openTargetPageNoRole('/m/match/getMyMatchFinishPlay');">已完成</span>
+  </nav>
+
+  #{if playItemDTO == null} 
+        <div class="empty-content" >
+        	<img src="/public/images/mobile/back_empty.png" alt="">
+        	<p class="empty-tips">暂无未完成对阵</p>
+        	
+			<form id="form" class="fight" action="?">
+				<input id="userType" type="hidden" value="${ userType }"/>
+				<input id="matchInfoId" type="hidden" name="matchInfoId" value="${matchInfoId}"/>
+			</form>
+    	</div>
+ 	#{/if}
+ 	#{else}
+ 	#{if gameNickName != null}
+  	<header class="copy-wrap mod">
+    	<p class="weak-text">对手的游戏昵称:</p>
+    	<p class="name">${gameNickName}</p>
+    	<span id="copyContent" class="btn btn-cancel" onclick="copyContent('${gameNickName}')">一键复制</span>
+  	</header>
+    #{/if}
+	<form id="form" class="fight" action="?">
+		<input id="schedulePlayId" type="hidden" name="schedulePlayId" value="${playItemDTO?.id}"/>
+		<input id="userType" type="hidden" value="${ userType }"/>
+		<input id="matchInfoId" type="hidden" name="matchInfoId" value="${matchInfoId}"/>
+		<input id="imgType" name="imgType" type="hidden" value="1"/> 	    
+		#{if playItemDTO?.captainId == userId} 
+			<input id="squadId" type="hidden" name="squadId" value="${playItemDTO?.squadId}">
+		#{/if}
+		#{elseif playItemDTO?.againstCaptainId == userId}
+			<input id="squadId" type="hidden" name="squadId" value="${playItemDTO?.againstId}">
+		#{/elseif}
+		
+		#{if playItemDTO?.captainId == userId} 
+			<input id="curPlayState" type="hidden" value="${playItemDTO?.playState}">
+		#{/if}
+		#{elseif playItemDTO?.againstCaptainId == userId}
+			<input id="curPlayState" type="hidden" value="${playItemDTO?.againstPlayState}">
+		#{/elseif}
+		
+		
+		<section class="mod mod-fight">
+    		<div class="fight-title">
+      			<h2>对战时间</h2>
+      			<p>${playItemDTO?.playTimeStr} ${playItemDTO?.matchServer} 比赛</p>
+    		</div>
+    		<div class="fight-block">
+      			<div class="the-player">
+        			<p class="icon show_guild" url="/m/match/guildShow?userId=${ playItemDTO?.userId }"><img src="#{if playItemDTO?.squadLogoUrl } ${playItemDTO?.squadLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" alt=""></p>
+        			<p class="m-tit">${playItemDTO?.squadName}</p>
+        			<p class="m-info">队长:${playItemDTO?.captainName}</p>
+        			<span class="army"></span>
+      			</div>
+      			<div class="the-player">
+        			<p class="icon show_guild" url="/m/match/guildShow?userId=${ playItemDTO?.againstUserId }"><img src="#{if playItemDTO?.againstLogoUrl }${playItemDTO?.againstLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" alt=""></p>
+        			<p class="m-tit">${playItemDTO?.againstName}</p>
+        			<p class="m-info">队长:${playItemDTO?.againstCaptainName}</p>
+        			<span class="army"></span>
+      			</div>
+    		</div>
+    		<a href="#" class="btn btn-ok" onclick="openCommunication(#{if playItemDTO?.captainId != userId }${playItemDTO?.captainId}#{/if}#{elseif playItemDTO?.againstCaptainId != userId }${playItemDTO?.againstCaptainId}#{/elseif})">联系对手</a>
+    		
+    		#{if respDTO?.contactGroupId != null && matchInfoDTO?.applyType == 1 && respDTO?.roleType != null && respDTO?.roleType != 2}
+    			<a id="groupDetail" href="#" class="btn btn-cancel" onclick="openClientPage('kk://chat/enterGroup?id=${respDTO?.contactGroupId}')" >队内私聊群</a>	
+      		#{/if}
+  		</section>
+
+  		<section class="mod mod-result">
+    		<div class="result-title">
+      			<h2>比赛结束</h2>
+      			<p>比赛结束，提交结果（重要）</p>
+    		</div>
+    		<div class="result-con">
+      				#{if stateDTO?.uploadImgBtnState == 0 }
+	        		<div id="file-btn" class="btn btn-ok" onclick="openImgPage('/m/match/getMyPlayImgs', '1', '${stateDTO?.uploadImgBtnState}');">
+						<span>胜者上传截图</span>
+					</div>
+					#{/if}
+					#{elseif stateDTO?.uploadImgBtnState == 1}
+					<div id="file-btn" class="btn btn-cancel btn-disabled">
+						<span>胜者上传截图</span>
+					</div>
+					#{/elseif}
+    		</div>
+  		</section>
+
+  		<footer class="footer">
+    		<a href="#" class="item" onclick="openConfirmDialog('1', '${stateDTO?.giveupBtnState}')">弃权比赛</a>
+    		<a href="#" class="item" onclick="openImgPage('/m/match/getMyPlayImgs', '2', '${stateDTO?.absentBtnState}')">
+    			#{if stateDTO.absentBtnState == 0 || stateDTO.absentBtnState == 1} 
+					投诉对方爽约
+				#{/if}
+				#{elseif stateDTO.absentBtnState == 2}
+					爽约详情
+				#{/elseif}
+    		</a>
+    		<a href="#" class="item" onclick="openTargetPage('/m/match/getMyVideos');">上传视频</a>
+    		<span class="item">有疑问<a class="org" href="javascript:void(0);" onclick="openKKServer();">点这里</a></span>
+    		<a href="/m/match/gift_rule.html?matchInfoId=${matchInfoId}&&visitSource=invitationPage" class="item rule-link">规则详情</a>
+  		</footer>
+</form>
+ 	#{/else}
+ 	
+ 	  	<!--提示浮层-->
+  		<div id="alert-win" class="mask-pop alert-win" style="display: none;">
+    		<div class="pop-alert">
+    			<div class="title">提示</div>
+    			<div class="con"></div>
+    			<div class="btns">
+      				<div class="btn-em" data-action="close" onclick="closeDialog()">确定</div>
+    			</div>
+    		</div>
+  		</div>
+  		
+  		<!--确认提交浮曾-->
+		<div id="win1" class="mask-pop alert-win auto-win" style="display:none;">
+		<input id="playState" type="hidden" value="" />
+		<div class="pop-alert">
+			<div class="title">提示</div>
+			<div class="con">
+			</div>
+			<div class="btns">
+				<div class="btn-default" onclick="closeConfirmDialog()">取消</div>
+				<a id="playStateSubmit" class="btn-em" style="display: block" href="#fff">确认</a>
+			</div>
+		</div>
+		</div> 	
+
+  <script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+  <script src="/public/js/mobile/match/zepto.js"></script>
+  <script src="/public/js/mobile/match/showGuild.js"></script>
+  <script src="/public/js/mobile/match/djx_client_common.js"></script>
+  <script>
+	var roleType = ${roleType};
+	
+	function alertWin(msg) {
+		$('#alert-win').show().find('.con').html(msg);
+	}
+	
+	function openKKServer() {
+		if (roleType != 0) {
+			alertWin("只有队长有操作权限！");
+			return;
+		}
+		
+		if ($('#userType').val() == '3') {
+			JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+			JSBridge.callNative("NineGameClient", "HandlerKKLink", {"kklink": "kk://chat/enter?id=10002"});
+		} else {
+			window.alert("kk://chat/enter?id=10002");
+		}
+	}
+	
+	function openCommunication(id){
+		if (roleType != 0) {
+			alertWin("只有队长有操作权限！");
+			return;
+		}
+		
+		if ($('#userType').val() == '3') {
+			JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+			JSBridge.callNative("NineGameClient", "HandlerKKLink", {"kklink": "kk://chat/enter?id="+id});
+		} else {
+			window.alert("kk://chat/enter?id="+id);
+		}
+	}
+	
+	//打开确认对话框
+	function openConfirmDialog(opType, btnState) {
+		if (roleType != 0) {
+			alertWin("只有队长有操作权限！");
+			return;
+		}
+		
+		var curPlayState = $('#curPlayState').val();
+		
+		if (btnState == '1' && curPlayState == 1) { //不可用&&放弃比赛
+			alertWin("你已申请放弃比赛，不可继续选择状态！");
+		    return;
+		} else if (btnState == '1' && (curPlayState == 5 || curPlayState == 6)) {
+			alertWin("你已选择了对战结果，无法进行操作！");
+		    return;
+		}
+		
+		var showContent = '';
+		var url = '';
+		if (opType == 1) { //放弃比赛
+			$('#playState').val("1");
+			showContent =  '确认“<span class="em">放弃比赛</span>”吗？提交后无法修改。';
+			url = '/m/match/giveupPlay';
+		}
+		
+		$('#win1').show().find('.con').html(showContent);
+		
+		// 显示弹窗
+	    $('#win1').on('touchend, click', '.btn-em', function() {
+	    	closeConfirmDialog();
+	    	$.ajax({
+	            url: url,
+	            data: {'schedulePlayId': $('#schedulePlayId').val(),'squadId': $('#squadId').val(),'playState': $('#playState').val(), },
+	            type: 'POST',
+	            success: function(res) {
+	              if (res) {
+	            	  var resJ = JSON.parse(res);
+	            	  if(resJ && resJ.success) {
+	  	                  if (resJ.data && resJ.data.error_code != 0) {
+	  	                	alertWin(resJ.data.error_msg);
+	  	                	return;
+	  	                  }
+	            		  window.location.reload(true);
+	  	              } else {
+	  					alertWin("提交失败！");
+	  					return;
+	  	              }	  
+	              }	else {
+	            	  alertWin("提交失败！");
+	            	  return;
+	              }
+	              
+	            }, 
+	            error: function() {
+	            	alertWin("提交失败！");
+	            	return;
+	            }
+	          });
+	    });
+	}
+	
+	// 关闭确认弹窗
+	function closeConfirmDialog() {
+	    $('#win1').hide().find('.con').html('');
+	}
+	
+	// 关闭确认弹窗
+	function closeDialog() {
+		// 关闭弹窗
+	    $('#alert-win').hide().find('.con').html('');
+	}
+	
+	// 打开目标页
+	function openImgPage(action, imgType, btnState) {
+		if (roleType != 0) {
+			alertWin("只有队长有操作权限！");
+			return;
+		}
+		
+		var curPlayState = $('#curPlayState').val();
+		
+		if (btnState == '1' && curPlayState == 1) { //不可用&&放弃比赛
+			alertWin("你已申请放弃比赛，不可继续选择状态！");
+		    return;
+		} else if (imgType == 2 && btnState == '1' && (curPlayState == 5 || curPlayState == 6)) {
+			alertWin("你已选择了对战结果，无法进行操作！");
+		    return;
+		} else if (btnState == '1') {
+			alertWin("比赛尚未开始,无法上传图片！");
+		    return;
+		}
+		
+		$('#imgType').val(imgType);
+		$('#form').attr('action', action);
+		$('#form').submit();
+	}
+	
+	// 打开目标页
+	function openTargetPage(action) {
+		if (roleType != 0) {
+			alertWin("只有队长有操作权限！");
+			return;
+		}
+		$('#form').attr('action', action);
+		$('#form').submit();
+	}
+	
+	function openTargetPageNoRole(action) {
+		$('#form').attr('action', action);
+		$('#form').submit();
+	}
+	
+	function copyContent(content) {
+		JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+		if (!JSBridge.isIOS) {
+			JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		}
+		JSBridge.callNative("NineGameClient", "copyText2Clipboard", {"content": content});
+	}
+    </script>
+    
+  
+  	<script type="text/javascript">
+     	$(function() {
+     		hideShareButton();
+     		
+     		showGuild();//异步加载点击战队头像事件
+     		
+     		enterGroupSupport(); //队内私聊群支持方法
+     		
+     		JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+     		if (JSBridge.isIOS) { //临时屏蔽按钮
+     			$('#copyContent').hide();
+     		}
+     	});
+  	</script>
+  
+  
+</body>
+</html>

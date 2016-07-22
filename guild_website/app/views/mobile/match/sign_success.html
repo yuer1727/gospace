@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   	#{if userType == 1 || userType == 3}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>报名成功</title> #{/else}
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+<style>
+    body{ background-color: #F2F2F2;}
+</style>
+ #{if userType != 1 && userType != 3}
+		<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+ #{/if}
+ <div class="sub-succ">
+  <br/>
+  <div class="act-rule">
+  <div align="center" class="sub-con">
+  <span class="icon-succ"></span>
+  #{if matchInfoDTO?.isAudit == 0}
+  #{if isNew == 0 }
+   		#{if userType == 3}
+      		恭喜,报名成功！
+   		#{/if}
+   		#{else}
+   			恭喜,<span class="em">"${guildName}"战队</span>报名成功！
+   		#{/else}
+  		
+  #{/if}
+  #{else}
+  		#{if userType == 3}
+      		恭喜,报名成功！
+   		#{/if}
+   		#{else}
+   			恭喜,报名成功！并成功创建"${guildName}"电竞侠战队#{/else}
+   		#{/else}
+  #{/if}
+  #{else}
+      	报名信息已提交，请耐心等候审核！
+  #{/else}
+  </div>
+  </div>
+ <div class="sub-form">
+  	  <div class="tips-info">
+            请于${signupTime} 进入电竞侠领取比赛入场劵, 
+      <span class="em">过期未领取视为放弃比赛资格！</span>      
+      </div>
+      <br/>
+	   #{if userType == 1}
+	   <input type="button" class="btn-sub" value="查看我的战队" id="showGuild"/>
+	   <input type="hidden" value="${guildId}" id="guildId" />
+	   #{/if}
+	   #{elseif userType == 3}
+	   		
+	   #{/elseif}   
+	   #{else}
+		<a  class="btn-sub-download" href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" >下载电竞侠  #{if matchInfoDTO?.isAudit == 0}签到确认参赛 #{/if} #{else}查看审核结果#{/else}</a>
+		#{/else}
+ </div>
+</div>
+<!--发起挑战  开始-->
+	#{if userType == 1}
+	<div class="mod-con tiaozhan">
+	  <div class="hd">
+	    <div class="title">发起挑战</div>
+	    #{if challengeSquadListDTO?.flag}
+	    <a href="#" class="change" url="/m/match/getChallengeSquad?matchInfoId=${matchInfoDTO?.id}&userId=${userId}&pageNO=${pageNO}&pageSize=${pageSize}">换一批</a>
+	    #{/if}
+	  </div>
+	  <div class="bd">
+	  #{if challengeSquadListDTO?.MatchSquadDTOList }
+	   <ul class="tz-team-list" id="tzAjax">
+	    <li>
+	    #{list items:challengeSquadListDTO?.MatchSquadDTOList, as:'csl'}
+	      <div class="item-team">
+            <div class="pic show_guild" url="/m/match/guildShow?userId=${ csl?.userId }">
+            <img src="#{if csl.squadLogoUrl}${csl.squadLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+            </div>
+            <div class="name">${csl?.squadName}</div>
+            <div class="btn-default" url="/m/match/updateFightedTimeAndCount?matchInfoId=${matchInfoDTO?.id}&squadId=${csl?.id}&otherUserId=${csl?.userId}&userId=${userId}">约战</div>
+          </div>
+        #{/list}
+        </li>
+	   </ul>
+    #{/if}
+	    <div class="tz-con">
+	      <div class="tj-text">发起挑战,还有机会赢大奖！</div>
+	      <div class="tj-btns">
+	      <input type="hidden"  id="updateChallenge" value="/m/match/updateChallenge?matchInfoId=${matchInfoDTO?.id}&squadId=${matchInfoDTO?.squadId}&userId=${userId}"/>
+	      <a  href="#" class="btn-tj">我要发起挑战</a>
+	     </div>
+	    </div>
+      </div>
+	  </div>
+	 #{/if}
+<!--发起挑战  结束-->
+<!--加入群聊  开始-->
+  #{if userType == 1}
+  #{if matchInfoDTO?.groupName || matchInfoDTO?.gameGroupName }
+  <div class="mod-con qunliao">
+    <div class="hd">
+      <div class="title">加入群与小伙伴畅聊</div>
+    </div>
+    <div class="bd">
+      <ul class="qun-list">
+      #{if matchInfoDTO?.groupName }
+      #{if userType==1 || userType == 3}
+	    <a href="javascript:void(0);" group_id="${matchInfoDTO?.groupId}" onclick="addGroup(this);">
+	  #{/if}
+	  #{else}
+		 <a href="javascript:void(0);" onclick="openDownloadKK()">	
+	  #{/else}
+        <li>
+          <div class="pic"><img src="#{if matchInfoDTO?.groupLogoUrl}${matchInfoDTO?.groupLogoUrl}#{/if}#{else} /public/images/mobile/match/no-group.png #{/else}" width="54" height="54"></div>
+          <div class="con">
+            <div class="name">${matchInfoDTO?.groupName}比赛群<span class="icon-guangfang">官方</span></div>
+            <div class="count">${matchInfoDTO?.groupTotalUser}人</div>
+          </div>
+          <div class="btns"><div class="btn-default">加入</div></div>
+        </li>
+       </a>
+       #{/if}
+      #{if matchInfoDTO?.gameGroupName }
+      #{if userType==1 || userType == 3}
+	    <a href="javascript:void(0);" group_id="${matchInfoDTO?.gameGroupId}" onclick="addGroup(this);">
+	  #{/if}
+	  #{else}
+		 <a href="javascript:void(0);" onclick="openDownloadKK()">	
+	  #{/else}
+        <li>
+          <div class="pic"><img src="#{if matchInfoDTO?.gameGroupLogoUrl}${matchInfoDTO?.gameGroupLogoUrl}#{/if}#{else} /public/images/mobile/match/no-group.png #{/else}" width="54" height="54"></div>
+          <div class="con">
+            <div class="name">${matchInfoDTO?.gameGroupName}公共聊天群<span class="icon-guangfang">官方</span></div>
+            <div class="count">${matchInfoDTO?.gameGroupTotalUser.raw()}人</div>
+          </div>
+          <div class="btns"><div class="btn-default">加入</div></div>
+        </li>
+       </a>
+       #{/if}
+      </ul>
+    </div>
+  </div>
+<!--加入群聊  结束-->	
+ #{/if}
+ #{/if}
+ <input type="hidden"  id="group_id" value="${ matchInfoDTO?.gameGroupId } +${ matchInfoDTO?.groupId }"/>
+ <input type="hidden"  id="test" value="kk://page/goto?target=groupDetail&id=${ matchInfoDTO?.groupId }"/>
+ <input type="hidden"  id="userType" value="${ userType }"/>
+ <input type="hidden"  id="userId" value="${ userId }"/>
+ <input type="hidden"  id="matchInfoId" value="${matchInfoDTO?.id}"/>
+<!--下载电竞侠浮层 开始-->
+<div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert2">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    <a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+</div>
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+<script src="/public/js/mobile/match/jquery.js"></script>
+<script src="/public/js/mobile/match/showGuild.js"></script>
+<script src="/public/js/mobile/match/sign-succ.js"></script>
+<script src="/public/js/mobile/match/succ.js"></script>
+#{if isNew != 0 && userType == 1}
+<script type="text/javascript">
+window.alert("kk://common/broadcastMessage?msgkey=create_guild_success&data=${data}");
+</script>
+#{/if}
+</body>
+</html>

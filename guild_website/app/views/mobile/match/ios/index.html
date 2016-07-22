@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>赛事大厅</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/game.css">
+</head>
+<body class="game-act">
+
+<!-- 列表数据异步加载 -->
+<input type="hidden" id="spreadType" value="${spreadType}" />
+<input type="hidden" id="pageNO" value="${pageNO}" />
+<input type="hidden" id="pageSize" value="${pageSize}" />
+
+<div class="top-bar">
+</div>
+<ul class="game-tag">
+    <li #{if spreadType == 4} class="current"#{/if}#{else} onClick="reloadLocation('4')"#{/else}>全部</li>
+    <li #{if spreadType == 0} class="current"#{/if}#{else} onClick="reloadLocation('0')"#{/else}>报名中</li>
+   	<li #{if spreadType == 2} class="current"#{/if}#{else} onClick="reloadLocation('2')"#{/else}>比赛中</li>
+</ul>
+<div id="bar_list">
+	<ul  id="ajaxContainer" class="game-act-list">
+			#{if spreadType == 4} 
+				<!--全部-->
+        		#{list items:matchInfoListDTO.list, as:'match' }
+					<li  onClick="openMatch (${match?.id})" >
+						<div class="pic">
+							<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+						</div>
+						<div class="con">
+							<div class="name">
+							#{if match?.spreadType=='-1' }
+							<span class="icon-prepare">预告中</span>${match?.title}</div>
+							<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+							#{/if}
+							#{if match?.spreadType=='0' }
+							<span class="icon-sign">报名中</span>${match?.title}</div>
+							<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+							#{/if}
+							#{if match?.spreadType=='1' }
+							<span class="icon-sign">签到中</span>${match?.title}</div>
+							<div class="time">${match?.signupStartTimeStr} - ${match?.signupEndTimeStr}</div>
+							#{/if}
+							#{if match?.spreadType=='2' }
+							<span class="icon-start">比赛中</span>${match?.title}</div>
+							<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div> 
+							#{/if}
+							#{if match?.spreadType=='3' }
+							<span class="icon-end">已结束</span>${match?.title}</div>
+							<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div> 
+							 #{/if}
+						</div>
+					</li>
+				#{/list}
+			#{/if}
+			#{if spreadType == 0}
+				<!--报名中-->
+        		#{list items:matchInfoListDTO.list, as:'match' }
+					<li  onClick="openMatch (${match?.id})" >
+						<div class="pic">
+							<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+						</div>
+						<div class="con">
+							<div class="name"><span class="icon-sign">报名</span>${match?.title}</div>
+							<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+						</div>
+					</li>
+				#{/list}
+			#{/if} 
+			#{if spreadType == 2}
+				<!-- 比赛中 -->
+				#{list items:matchInfoListDTO.list, as:'match' }
+					<li  onClick="openMatch (${match?.id})" >
+						<div class="pic">
+							<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+						</div>
+						<div class="con">
+							<div class="name"><span class="icon-start">比赛</span>${match?.title}</div>
+							<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div>
+						</div>
+					</li>
+				#{/list}
+			#{/if}
+		</ul>
+</div>
+<!-- 加载模块按钮 -->
+<div class="module-more loading" id="loading">
+	<div id="loadingTip" class="item"><span class="o-modify-pull">加载更多</span></div>
+	<div id="noMoreTip" class="item">对不起，已经没有下一页数据！</div>
+	<div id="errorTip" class="item">网络繁忙，点击重试</div>
+	<div id="moreBtn" class="item"><span class="o-modify-pull">加载更多</span></div>
+</div>
+<!-- 列表模块.end -->
+</body>
+<script type="text/javascript" src="/public/js/mobile/match/zepto_touch_ai.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/scroll_bottom_load.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/ajax_list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/list.js"></script>
+<script type="text/javascript">
+	function reloadLocation(spreadType) {
+		window.location.href= "/m/match/index.html?spreadType=" + spreadType;
+	}
+
+	function openMatch (matchInfoId) {
+		window.location.href= "/m/match/gift_rule.html?matchInfoId=" + matchInfoId;
+	}
+</script>
+</html>

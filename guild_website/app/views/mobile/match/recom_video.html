@@ -1,0 +1,108 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{set matchId:matchInfoDTO?.id /}
+	#{if userType == 1 || userType == 3}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>视频</title> #{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+<input type ="hidden" id="userType" value="${userType}" />
+ #{if userType != 1 && userType != 3 && !isShareToOut}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+  #{/if}
+  #{elseif userType != 1 && userType != 3 && isShareToOut}
+  		#{include file="mobile/match/share_head.html" /}
+  #{/elseif}
+ 
+ 
+ #{if matchInfoDTO?.topImgUrl }
+  	<div class="top">
+	<img src="${matchInfoDTO?.topImgUrl}">
+	 <div class="tag">
+     #{if matchInfoDTO?.area}
+      <span class="item">${matchInfoDTO?.area}</span>
+     #{/if}
+     #{if matchInfoDTO?.level}
+      <span class="item">${matchInfoDTO?.level}</span>
+     #{/if}
+     #{if matchInfoDTO?.spreadType}
+      <span class="item">${matchInfoDTO?.spreadType}</span>
+     #{/if}
+      #{list items:awardTypes, as:'at' }
+      <span class="item">${at?.name}</span>
+      #{/list}
+     </div>
+	</div>
+ #{/if}
+	<ul class="act-nav">
+		<li><a href="/m/match/gift_rule.html?matchInfoId=${ matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}&organizer=${organizer}" ><span class="in">赛规</span></a></li>
+		#{if organizer == null || organizer == 1}
+    	<li><a href="/m/match/match.html?matchInfoId=${ matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}"><span class="in">赛程</span></a></li>
+    	#{/if}
+    	<li><a href="/m/match/match_result.html?matchInfoId=${ matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}&organizer=${organizer}"><span class="in">结果</span></a></li>
+		<li class="on"><a href="#"><span class="in">视频</span></a></li>
+	</ul>
+	#{if matchVideoDTOList}
+	<ul class="video-list">
+	#{list items:matchVideoDTOList, as:'video' }
+		<li>
+			<div class="item-video" onclick="#{if userType != 1 && userType != 3 }openDownloadKK()#{/if}#{else}openVideo(this)#{/else}" data-url="${video.videoUrl}" data-vid="${video.id}">
+				<div class="pic">
+					<img width="100%" src="#{if video.videoLogoUrl} ${video.videoLogoUrl} #{/if} #{else} /public/images/mobile/match/video_normal.jpg#{/else} "/>
+				</div>
+				<div class="name">${video?.videoTitle}</div>
+			</div>
+		</li>
+	#{/list}	
+	</ul>
+	#{/if}
+	#{else}
+	<div class="none-info-match">
+		<div class="none-info-con">
+			<img alt="暂无视频"  src="/public/images/mobile/match/ic_error_null.png" width="120" height="120" />
+			<div class="text">暂无视频</div>
+		</div>
+	</div>	
+	#{/else}
+<div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert2">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    #{if userType != 1 && userType != 3 && !isShareToOut}
+	    	<a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+  		#{/if}
+  		#{elseif userType != 1 && userType != 3 && isShareToOut}
+  			<a href="javascript:void(0);" onclick="downloadkk4Share('share_match', 'WD_88', '${matchId}')" class="btn-down">立即下载</a>
+  		#{/elseif}
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+</div>
+	<script src="/public/js/mobile/match/zepto.min.js"></script>
+	<script src="/public/js/mobile/match/jquery.js"></script>
+	<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+	<script type="text/javascript" src="/public/js/mobile/match/showGuild.js"></script>
+<script>
+	function openVideo(ele) {
+		JSBridge.isIos = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+		if (!JSBridge.isIos) {
+			JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		}
+		var url = $(ele).attr('data-url');
+		var vid = $(ele).attr('data-vid');
+		JSBridge.callNative("NineGameClient", "openWindow", {"url": url, "target": "video", "options": {"video_id": vid, "match_id" : ${matchInfoDTO?.id}} });
+	}
+</script>
+</body>
+</html>

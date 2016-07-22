@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <title>动态详情</title>
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <meta content="yes" name="apple-touch-fullscreen" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="keywords" content="关键词" />
+  <meta name="description" content="描述" />
+  <link rel="stylesheet" href="/public/css/mobile/dynamic/dynamic.css?a0c90726ea">
+</head>
+
+<body>
+  <!-- 下载入口 begin -->
+  <section class="down-wrap">
+    <span class="app-logo"></span>
+    <dl class="descr">
+      <dt>电竞侠</dt>
+      <dd>移动电竞全民赛事平台</dd>
+    </dl>
+    <a class="btn-down" href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89">下载</a>
+  </section>
+  <div class="fixed-hold"></div>
+  <header></header>
+  <!-- 下载入口 end -->
+
+  <section class="details">
+    <img class="avatar" src="${userInfo.logo}" alt="头像">
+    <div class="cont">
+      <div class="hd">
+        <span class="title">${userInfo.name}</span>
+        <!-- 男性用户 -->
+        <!-- <span class="tags female">
+          <i class="icon"></i>
+          <span class="badge">大神</span>
+        </span> -->
+        <!-- 女性用户 -->
+        <span class="#{if userInfo.sex==0}tags#{/if}#{else}tags femail#{/else}">
+          <i class="icon"></i>
+          #{list items:userInfo.tags, as:'tag' }
+		  <img src="${tag}" width="30">
+		  #{/list}
+        </span>
+      </div>
+      <p class="text">${data.content.text.raw()}</p>
+      <div class="video-wrap j-downtips">
+        <div class="img"><img src="${data.content.video_poster}" alt="视频截图"></div>
+        <p class="title">${data.content.video_title}</p>
+        <i class="icon-play"></i>
+      </div>
+      <div class="ft">
+        <span class="time">${time}</span>
+        <span class="support j-downtips"><i></i><span class="num">${data.znum}</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下载弹窗 -->
+  <section id="downPopup" class="down-popup-mask">
+    <div class="down-popup">
+      <div class="popup-hd"></div>
+      <div class="popup-bd">
+        <p class="text">请下载电竞侠，更多精彩内容等着你！</p>
+        <a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="btn-down j-close">立即安装</a>
+        <span class="popup-close j-close"></span>
+      </div>
+    </div>
+  </section>
+  <!-- 微信下载引导 -->
+  <section class="mod-popup mod-popup-prompt" id="wechatTips">
+    <div class="mod-popup-bg popup_close"></div>
+    <div class="popup-wechat" id="" >
+      <div class="content">
+        <p class="label">下载不了？试试这样</p>
+        <p class="line"><span class="num">1</span>点击<span class="em">右上角<i class="o-wechat-ico-1"></i></span></p>
+        <p class="line"><span class="num">2</span>点击<span class="em"><i class="o-wechat-ico-2"></i></span></p>
+        <p class="line"><span class="num">3</span>点击<span class="em">下载</span></p>
+      </div>
+      <span class="wechat-arr"></span>
+    </div>
+  </section>
+
+  <script src="/public/js/mobile/match/zepto.js"></script>
+  <script src="/public/js/mobile/dynamic/dynamic.js"></script>
+</body>
+</html>

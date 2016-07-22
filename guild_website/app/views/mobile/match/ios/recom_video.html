@@ -1,0 +1,63 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${matchInfoDTO?.title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+ #{if matchInfoDTO?.topImgUrl }
+	<div class="top"><img src="${matchInfoDTO?.topImgUrl}"></div>
+ #{/if}
+	<ul class="act-nav">
+		<li><a href="/m/match/gift_rule.html?matchInfoId=${ matchInfoDTO?.id }">赛规&奖励</a></li>
+		#{if matchInfoDTO?.hasSchedule || isMatchTime }
+    	<li><a href="/m/match/match.html?matchInfoId=${ matchInfoDTO?.id }">赛程</a></li>
+    	#{/if}
+		<li class="on"><a href="#">参赛视频</a></li>
+	</ul>
+	#{if matchVideoDTOList}
+	<ul class="video-list">
+	#{list items:matchVideoDTOList, as:'video' }
+		<li>
+			<div class="item-video" onclick="openVideo(this)" data-url="${video.videoUrl}" data-vid="${video.id}">
+				<div class="pic">
+					<img width="100%" src="#{if video.videoLogoUrl} ${video.videoLogoUrl} #{/if} #{else} /public/images/mobile/match/video_normal.jpg#{/else} "/>
+				</div>
+				<div class="name">${video?.videoTitle}</div>
+			</div>
+		</li>
+	#{/list}	
+	</ul>
+	#{/if}
+	#{else}
+	<div class="none-info-match">
+		<div class="none-info-con">
+			<img alt="暂无视频"  src="/public/images/mobile/match/ic_error_null.png" width="60" height="64" />
+			<div class="text">暂无视频</div>
+		</div>
+	</div>	
+	#{/else}
+
+	<script src="/public/js/mobile/match/zepto.min.js"></script>
+	<script src="/public/js/mobile/match/jquery.js"></script>
+	<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script>
+	function openVideo(ele) {
+		var url = $(ele).attr('data-url');
+		var vid = $(ele).attr('data-vid');
+		JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		JSBridge.callNative("NineGameClient", "openWindow", {"url": url, "target": "video", "options": {"video_id": vid, "match_id" : ${matchInfoDTO?.id}} });
+	}
+	
+	function closeWin(){
+		$('#win1').hide();
+	}
+</script>
+</body>
+</html>

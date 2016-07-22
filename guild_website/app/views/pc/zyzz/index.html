@@ -1,0 +1,148 @@
+#{extends 'common/pc_main.html' /}
+#{set title:'自由之战3F职业联赛-电竞侠' /}
+
+#{set 'moreStyles'}
+    <link rel="stylesheet" type="text/css" href="/public/css/ziyou_v2.css">
+#{/set}
+
+#{set 'moreScripts'}
+    <script src="/public/js/app/ziyou_v2/home.js"></script>
+    <script src="/public/js/app/ziyou_v2/form.js"></script>
+    <script src="/public/js/app/ziyou_v2/file_imgload.js"></script>
+#{/set}
+
+<div class="top">
+        <h1>自由之战3F职业联赛</h1>
+        <img src="/public/images/top_1.jpg" width="1000">
+        <img src="/public/images/top_2.jpg" width="1000">
+        <img src="/public/images/top_3.jpg" width="1000">
+</div>
+<div class="top-nav">
+    <ul>
+        <li class="nav-1 on"><a href="index.html">首页<span class="text">home</span></a></li>
+        <li class="nav-2"><a href="intro.html">赛事说明<span class="text">description</span></a></li>
+        <li class="nav-3"><a href="#">战队报名<span class="text">sign up</span></a></li>
+    </ul>
+</div>
+<!--联赛奖品-->
+<div class="act-gift">
+    <div class="hd">联赛奖品</div>
+    <ul class="gift-list">
+        #{list items:prizeList, as:'prize'}
+            <li><img src='${prize["prizeImgUrl"]}' width='140' height='100'><span class='name'>${prize["prizeName"]}</span></li>
+        #{/list}
+    </ul>
+    <div class="bg1"></div>
+    <div class="bg2"></div>
+</div>
+
+<!--参赛战队-->
+<div class="team-join">
+    <div class="mod-title"><span class="arrow"></span>参赛战队</div>
+    <ul class="team-nav">
+        <li class="on"><a href="javascript:void(0);">赛区1</a></li>
+        <li><a href="javascript:void(0);">赛区2</a></li>
+        <li><a href="javascript:void(0);">赛区3</a></li>
+        <li><a href="javascript:void(0);">赛区4</a></li>
+        <li><a href="javascript:void(0);">赛区5</a></li>
+        <li><a href="javascript:void(0);">赛区6</a></li>
+        <li><a href="javascript:void(0);">赛区7</a></li>
+        <li><a href="javascript:void(0);">赛区8</a></li>
+    </ul>
+    <div class="team-con">
+        #{list items:zoneList, as:'zone'}
+            <ul class="team-list #{if zone_index != 1}hide#{/if}">
+                #{list items:zone, as:'team'}
+                    <li class="item-team">
+                        <div class="pic"><img src='${team["avatarUrl"]}' width='90' height='90'></div>
+                        <div class="name">${team["teamName"]}</div>
+                        <div class="info">战力 ${team["votes"]}</div>
+                        <a href="#" class="btn-vote">+战力</a>
+                    </li>
+                #{/list}
+            </ul>
+        #{/list}
+        
+    </div>
+</div>
+
+<!--精英战队-->
+<div class="team-score">
+    <div class="mod-title"><span class="arrow"></span>精英战队</div>
+    
+    <ul class="score-list score-list-1"><!--第一列-->
+        #{list items:team1, as:'team'}
+            <li class="item-score">
+                <div class="pic"><img src='${team["avatarUrl"]}' width='40' height='40'></div>
+                <div class="con"><div class="name">${team["teamName"]}</div></div>
+                <div class="win">${team["winCount"]}胜</div>
+                <div class="lose">${team["loseCount"]}负</div>
+            </li>
+        #{/list}
+    </ul>
+    <ul class="score-list score-list-2"><!--第一列-->
+        #{list items:team2, as:'team'}
+            <li class="item-score">
+                <div class="pic"><img src='${team["avatarUrl"]}' width='40' height='40'></div>
+                <div class="con"><div class="name">${team["teamName"]}</div></div>
+                <div class="win">${team["winCount"]}胜</div>
+                <div class="lose">${team["loseCount"]}负</div>
+            </li>
+        #{/list}
+    </ul>
+    <ul class="score-list score-list-3"><!--第一列-->
+        #{list items:team3, as:'team'}
+            <li class="item-score">
+                <div class="pic"><img src='${team["avatarUrl"]}' width='40' height='40'></div>
+                <div class="con"><div class="name">${team["teamName"]}</div></div>
+                <div class="win">${team["winCount"]}胜</div>
+                <div class="lose">${team["loseCount"]}负</div>
+            </li>
+        #{/list}
+    </ul>
+</div>
+
+<!--精彩视频-->
+<div class="rec-video">
+    <div class="mod-title"><span class="arrow"></span>精彩视频</div>
+    <ul class="video-list">
+        #{list items:vedioList, as:'vedio'}
+            <li class="item-video">
+                <div class="pic"><a href='${vedio["vedioUrl"]}' target='_blank'><img src='${vedio["vedioPic"]}' width='233' height='130'>
+                    <span class="icon-video"></span></a></div>
+                <div class="name">${vedio["desc"]}</div>
+                <span class="bg1"></span>
+                <span class="bg2"></span>
+            </li>
+        #{/list}
+    </ul>
+</div>
+
+#{include file="common/footer.html" /}
+<!--投票浮层-->
+<div class="pop-alert"  style="display: none;">
+    <div class="title">请下载电竞侠完成投票</div>
+    <div class="code"><img src="/public/images/code.png" width="150" height="150"></div>
+    <div class="btn-close"></div>
+</div>
+#{include file="pc/zyzz/apply.html" /}
+
+<!--浮层 报名成功-->
+#{if success != null}
+<div class="pop-info" style="display: ;"">
+	<div class="head">填写报名信息</div>
+	<div class="info-con">
+	<!-- 成功还是失败-->
+		#{if success == true}
+		<span class="icon-succ"></span>
+		<div class="text">恭喜,报名成功!请留意短信通知.</div>
+		#{/if}
+		#{if success == false}
+		<span class="icon-error"></span>
+		<div class="text">很抱歉，报名失败，<a href="#">请重新填写报名信息.</a></div>
+		#{/if}
+		
+	</div>
+	<div class="btn-close"></div>
+</div>
+#{/if}

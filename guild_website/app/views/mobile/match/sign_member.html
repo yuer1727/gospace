@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{if userType == 1 || userType == 3}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>报名</title> #{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/djx-match.css">
+</head>
+<body>
+    #{if userType != 1 && userType != 3}
+		<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+	#{/if}
+
+	<div class="banner">
+		<img src="${matchInfoDTO?.topImgUrl}">
+	</div>
+	<!--  
+	<div class="top"><img src="${matchInfoDTO?.topImgUrl}"></div>
+	<ul class="act-nav">
+		<li class="on"><a href="#">报名</a></li>
+		<li><a href="#">赛程</a></li>
+		<li><a href="#">奖品</a></li>
+		<li><a href="#">规则</a></li>
+		<li><a href="#">视频</a></li>
+	</ul>
+	-->
+	<div class="sign-form">
+		<form method="post" action="/m/match/createMatchMemberApply" class="fight" id="form1">
+		<input type="hidden" id="matchInfoId" name="matchInfoId" value="${matchInfoDTO.id}" />
+		<input type="hidden" id="squadId" name="squadId" value="${squadId}" />
+		<input type="hidden" id="userId" name="userId" value="${userId}"  />
+		<input type="hidden" id="mobile" name="mobile" value="${mobile}" />
+		<input type="hidden" id="from" name="from" value="${from}"	/>
+		<input id="api-upload" type="hidden" value="/m/match/uploadImgBase64" />
+		<input id="upload-name" type="hidden" value="file" />
+		<input type="hidden" id="applyInputContent" name="applyInputContent" />
+		<input type="hidden" id="imgUploadContent" name="imgUploadContent" />
+		<input type="hidden" id="userType" value="${userType}" />
+        <input type="hidden" value="" id="verifyCode" name="verifyCode" />
+		<div class="row">
+			<label><span class="em">*</span>战队名称(游戏内): &nbsp;&nbsp;<span>${matchSquadDetail?.squadName}</span></label>
+
+		</div>
+		
+		#{list items:applyInputItemDTOs, as:'aii' }
+		<div class="row"> 
+			<label>
+				#{if aii.required == "true"}
+					<span class="em">*</span>
+				#{/if}
+				${aii.title}
+			</label>
+			<div class="con" nameFlag="inputDataGroup">
+				<input type="hidden" nameFlag="title" value="${aii.title}"/>
+				<input type="text" class="input-text #{if aii.required == 'true'}required#{/if}" nameFlag="content" maxlength="${aii.maxLength}" inputType="${aii.inputType}" value="${aii.content}" />
+			</div>
+		</div>
+		#{/list}
+		#{list items:uploadImgItemDTOs, as:'iii' }
+		<div class="row"> 
+			<label>
+				<span class="em">*</span>
+				${iii.title}
+			</label>
+			<div class="result-con" nameFlag="imgUploadGroup">
+				<input type="hidden" nameFlag="title" value="${iii.title}"/>
+				<div nameFlag="fileBtn" class="btn-pic" style="border: 1px solid #E5E5E5; background-color:#fff;">
+					<input nameFlag="fileInput" type="file" class="file-input" accept="image/*">
+					<input nameFlag="fileRemoteUrl" type="hidden" class="required" />
+					<span style="color: #0
+					00;">点击上传</span>
+				</div>
+				<ul nameFlag="imgList" class="img-list">
+				</ul>
+			</div>
+		</div>
+		#{/list}
+		#{if userType != 1 && userType != 3}
+			<div class="row">
+				<label>手机号:</label>
+				<div class="msg-code">
+					<div class="con">
+						<input type="text" class="input-text required" name="phone" id="phone" maxlength="11" data-required />
+						<span class="tips hide" data-msg="请输入手机号"></span>
+					</div>
+					<div class="btn-give" onclick="getVerifyCode();">获取验证码</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="con">
+					<input type="text" class="input-text required" id="yazheng"  maxlength="11" placeholder="短信验证码" />
+				</div>
+			</div>
+		#{/if}
+		<div class="con-tips">若提交不成功联系#{if userType == 1 || userType == 3}<a href="javascript:void(0);" onclick="openKKServer();">电竞侠客服</a>#{/if}#{else}QQ:17342925#{/else}</div>
+		<input type="button" class="btn btn-ok" value="提交" id="send" />
+		<p class="tr"><a href="/m/match/gift_rule.html?matchInfoId=${matchInfoDTO.id}&visitSource=${visitSource}" class="rule-link">规则详情&gt;</a></p>
+		<div><span style="color:red;" id="errorTips"></span></div>
+		</form>
+	</div>
+	</form>
+
+
+	<!--提示浮层-->
+	<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+	</div>
+	<script src="/public/js/mobile/jsbridge/sdk-debug.js"></script>
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.js"></script>
+	<script src="/public/js/mobile/match/canvas-to-blob.min.js"></script>
+	<script src="/public/js/mobile/match/form.js"></script>
+	<script src="/public/js/mobile/match/file_imgload.js"></script>
+	<script src="/public/js/mobile/match/check_mobile.js"></script>
+  <script>
+	function openKKServer() {
+		if ($('#userType').val() == '3') {
+			JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+			JSBridge.callNative("NineGameClient", "HandlerKKLink", {"kklink": "kk://chat/enter?id=10002"});
+		} else {
+			window.alert("kk://chat/enter?id=10002");
+		}
+	}
+  </script>
+</body>
+</html>

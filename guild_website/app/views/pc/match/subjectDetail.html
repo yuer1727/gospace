@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>电竞侠移动电竞大奖赛揭幕赛</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="/public/css/pc/match/index.css?581fccf8ea">
+</head>
+<body>
+<!-- header begin -->
+<div class="header">
+  <div class="top"><div class="inner"><a href="http://www.kkyuyin.com"><span class="logo">电竞侠</span></a></div></div>
+  <div class="banner"><h1 class="slogan">电竞侠移动电竞大奖赛揭幕赛</h1></div>
+  <div class="btn-wrap">
+    <span id="aboutBtn" class="btn btn-about"><em class="in">关于比赛</em></span>
+    <span id="rulesBtn" class="btn btn-rules"><em class="in">比赛规则</em></span>
+    <a class="btn btn-join" href="matchList.html?id=${dto.id}" target="_blank"><em class="in">我要报名</em></a>
+  </div>
+</div>
+<!-- header end -->
+<!-- content begin -->
+<div class="content inner">
+  <div class="qrcode-wrap">
+    <img src="/public/images/pc/match/qrcode.png" alt="二维码">
+    <p>下载电竞侠</p>
+    <p>了解更多赛事</p>
+  </div>
+
+  <div class="mod mod-race">
+    <input type="hidden" id="id" value="${dto.id}" />
+    <h2 class="mod-title">赛事直播日</h2>
+    <ul class="race-list">
+        %{
+         def i = 0;
+        }%
+        #{list items:itemList,as:'item'}
+        %{
+            if (i >= 4)
+                break
+            
+        }%
+        <li>
+            <div class="title
+                %{
+                    if (i==1) print ' title-org'
+                    if (i==2) print ' title-cyan'
+                    if (i==3) print ' title-red'
+                    
+                 i++;
+                }%
+            ">
+                <p class="date">${item?.title}</p>
+                <p class="desc">${item?.sub_title}</p>
+            </div>
+            #{list items:item.playList,as:'item2'}
+                <div class="cont">
+                    <div class="vs">
+                        <span class="team">${item2.squadName}</span>
+                        #{if item2.isMatchOver == false}
+                        <i class="icon icon-vs">VS</i>
+                        #{/if}
+                        #{else}
+                        <i class="score">${item2.score}:${item2.againScore}</i>
+                        #{/else}
+                        <span class="team">${item2.againSquadName}</span>
+                    </div>
+                    <img class="app-logo" src="${item2?.matchImgUrl}">
+                    <p class="time">${new Date(item2?.playStartTime).format("HH:mm")}-${new Date(item2?.playEndTime).format("HH:mm")}</p>
+                    
+                </div>
+            #{/list}
+        </li>
+        #{/list}
+       
+      
+    </ul>
+  </div>
+
+  <div class="mod mod-video">
+    <h2 class="mod-title">视频直播</h2>
+    <div class="video-wrap">
+      <!--  <embed width="1082" height="652" allownetworking="all" allowscriptaccess="always" src="" quality="high" bgcolor="#000" wmode="window" allowfullscreen="true" allowFullScreenInteractive="true" type="application/x-shockwave-flash">
+      -->
+      <object type="application/x-shockwave-flash" id="liveplayer" name="liveplayer" align="middle" data="${dto.liveUrl}"
+            width="1082" height="652">
+            <param name="quality" value="high">
+            <param name="bgcolor" value="#ffffff">
+            <param name="allowscriptaccess" value="always">
+            <param name="allowfullscreen" value="true">
+            <param name="wmode" value="transparent">
+            <param name="flashvars" value="source=1006">
+          </object>
+    </div>
+  </div>
+  
+   <div class="mod mod-host">
+    <h2 class="mod-title">赛事主办</h2>
+    <div class="links-wrap">
+      <ul class="links-list">
+        <li><a href="http://www.kkyuyin.com/" target="_blank"><img src="/public/images/pc/logo/kkyuyin.jpg" alt="电竞侠"></a></li>
+        <li><a href="#"><img src="/public/images/pc/logo/yinchong.jpg" alt="英众传媒"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mod mod-partners">
+    <h2 class="mod-title">合作伙伴</h2>
+    <div class="links-wrap">
+      <ul class="links-list">
+        <li><a href="http://www.ztgame.com/" target="_blank"><img src="/public/images/pc/logo/ztgame.jpg" alt="巨人移动"></a></li>
+        <li><a href="http://gaea.com/cn/" target="_blank"><img src="/public/images/pc/logo/gaea.jpg" alt="盖娅互娱 "></a></li>
+        <li><a href="http://www.yh.cn/" target="_blank"><img src="/public/images/pc/logo/yh.jpg" alt="银汉游戏"></a></li>
+        <li><a href="http://www.163.com/" target="_blank"><img src="/public/images/pc/logo/163.jpg" alt="网易"></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mod mod-media">
+    <h2 class="mod-title">首席合作媒体</h2>
+    <div class="links-wrap">
+      <ul class="links-list">
+
+        <li><a href="http://dj.sina.com.cn" target="_blank"><img src="/public/images/pc/logo/dj.sina.jpg" alt="新浪电竞"></a></li>
+        <li><a href="http://www.mycea.net/" target="_blank"><img src="/public/images/pc/logo/mycea.net.jpg" alt="《电子竞技》杂志"></a></li>
+        <li><a href="http://www.dadianjing.cn" target="_blank"><img src="/public/images/pc/logo/dadianjing.jpg" alt="大电竞"></a></li>
+        <li><a href="http://www.uuu9.com" target="_blank"><img src="/public/images/pc/logo/uuu9.png" alt="游久网"></a></li>
+        <li><a href="http://www.gao7.com/" target="_blank"><img src="/public/images/pc/logo/gao7.png" alt="搞趣网"></a></li>
+        <li><a href="http://www.candou.com/" target="_blank"><img src="/public/images/pc/logo/candou.png" alt="蚕豆网"></a></li>
+        <li><a href="http://vs.ptbus.com/" target="_blank"><img src="/public/images/pc/logo/ptbus.png" alt="口袋电竞"></a></li>
+        <li><a href="http://www.youshixiu.com/" target="_blank"><img src="/public/images/pc/logo/youshixiu.png" alt="游视秀"></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mod mod-platform">
+    <h2 class="mod-title">直播平台</h2>
+    <div class="links-wrap">
+      <ul class="links-list">
+      <li><a href="http://www.zhanqi.tv/11536368" target="_blank"><img src="/public/images/pc/logo/zhanqi.jpg" alt="战旗tv"></a></li>
+        <li><a href="http://chushou.tv/room/1021.htm" target="_blank"><img src="/public/images/pc/logo/chushou.jpg" alt="触手tv"></a></li>
+        <li><a href="http://www.douyutv.com/554914" target="_blank"><img src="/public/images/pc/logo/douyutv.jpg" alt="斗鱼tv"></a></li>
+        <li><a href="http://www.panda.tv/" target="_blank"><img src="/public/images/pc/logo/panda.jpg" alt="熊猫tv"></a></li>
+        <li><a href="http://live.9game.cn/" target="_blank"><img src="/public/images/pc/logo/live.9game.jpg" alt="九游直播"></a></li>
+        <li><a href="http://www.huya.com/" target="_blank"><img src="/public/images/pc/logo/huya.jpg" alt="虎牙直播"></a></li>
+        <li><a href="http://star.longzhu.com/dianjingxia" target="_blank"><img src="/public/images/pc/logo/longzhu.png" alt="龙珠直播"></a></li>
+      </ul>
+    </div>
+  </div>
+
+
+</div>
+<!-- content end -->
+#{include file="/common/footer.html" /}
+
+<!-- 关于比赛 -->
+<script type="text/html" id="about">
+  <div class="article">
+   电竞侠大奖赛是由电竞侠全民赛事平台与九游游戏共同举办的面向全民的移动电竞赛事，赛事项目覆盖当前市面上最火爆的移动电竞项目。即使你是萌新，也有机会在电竞侠大奖赛中一鸣惊人。你的电竞旅程中，必有一局，值得铭记！
+  </div>
+</script>
+<!-- 比赛规则 -->
+<script type="text/html" id="rules">
+  <ul id="tabs" class="tabs">
+    <li class="active" data-id="lscs">炉石传说</li>
+    <li data-id="zyzz">自由之战</li>
+    <li data-id="xr">虚荣</li>
+    <li data-id="skzh">时空召唤</li>
+  </ul>
+<!--炉石传说-->
+  <div class="article article-rules">
+    <div id="lscs" class="cont">
+       <div class="section">
+            <p class="title">报名方式</p>
+            <p>本次比赛为邀请赛制，不接受报名，不便之处请见谅</p>
+        </div>
+        <div class="section">
+            <p class="title">活动奖励</p>
+            <p>冠军：40000RMB</p>
+            <p>亚军：20000RMB</p>
+        </div>
+
+        <div class="section">
+            <p class="title">赛程安排</p>
+            <p>3月13日</p>
+            <p class="pl3">第一轮比赛时间19:30-20:30</p>
+            <p>3月20日</p>
+            <p class="pl3">第二轮比赛时间19:30-20:30</p>
+            <p>3月27日</p>
+            <p class="pl3">第三轮比赛时间19:30-20:30</p>
+            <p>4月3日</p>
+            <p class="pl3">第四轮比赛时间19:30-20:30</p>
+        </div>
+        <div class="section">
+            <p class="title">比赛模式</p>
+            <p>服务器：中国大陆服务器</p>
+            <p>组队模式：一个战队3位选手参与，通过战队对抗模式交战</p>
+        </div>
+        <div class="section">
+            <p class="title">比赛规则</p>
+            <p>1、比赛战队由电竞侠直接邀请</p>
+            <p>2、由电竞侠承办随机分队对阵</p>
+            <p>3、赛前准备：赛前准备时间里与游戏对手互加好友</p>
+            <p>4、职业限制：双方战队轮流BAN PICK职业，职业不可重复选择</p>
+            <p>5、卡组限制：同一战队选手共享一个卡池。即不可重复使用传说卡，三人卡组中单张非传说卡不可使用超过两次</p>
+            <p>6、两支战队每周交战，BAN PICK规则会每周改变，力图为玩家、观众带来最有趣的赛事</p>
+        </div>
+    </div>
+<!--自由之战-->
+    <div id="zyzz" class="cont hide">
+      <div class="section">
+        <p class="title">报名方式</p>
+        <p>官网报名/App端内报名，报名后请下载电竞侠APP准时签到、参赛</p>
+      </div>
+      <div class="section">
+        <p class="title">活动奖励</p>
+        <p>第一周攻擂战胜者：5000RMB</p>
+        <p>守擂成功奖金翻倍，封顶40000RMB</p>
+        <p>冠军：2000RMB+攻擂赛挑战资格</p>
+        <p>亚军：价值约500元自由之战大礼包+500香蕉</p>
+        <p>四强：价值约300元自由之战大礼包+300香蕉</p>
+        <p>八强：价值约50元自由之战大礼包+200香蕉</p>
+        <p>十六强：100香蕉</p>
+      </div>
+      <div class="section">
+        <p class="title">赛程安排</p>
+        <p>报名：</p>
+        <p class="pl3">第一周3月4日-3月7日17:30</p>
+        <p class="pl3">第二周3月8日-3月14日17:30</p>
+        <p class="pl3">第三周3月15日-3月21日17:30</p>
+        <p class="pl3">第四周3月22日-3月28日17:30</p>
+        <p>签到：</p>
+        <p class="pl3">每周一17:30-3月7日18:30</p>
+        <p>比赛：</p>
+        <p class="pl3">每周一</p>
+        <p class="pl3">第一轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">每周二</p>
+        <p class="pl3">第二轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">第三轮准备时间20:30-20:45</p>
+        <p class="pl6">比赛时间20:30-21:30</p>
+        <p class="pl3">每周三</p>
+        <p class="pl3">第四轮准备时间19:00-19:15</p>
+        <p class="pl6">比赛时间19:00-20:00</p>
+        <p class="pl3">第五轮准备时间20:00-20:15</p>
+        <p class="pl6">比赛时间20:00-21:00</p>
+        <p class="pl3">决赛&emsp;准备时间21:00-21:15</p>
+        <p class="pl6">比赛时间21:00-22:00</p>
+        <p class="pl3">周日</p>
+        <p class="pl3">攻擂赛准备时间20:00-20:30</p>
+        <p class="pl6">比赛时间20:30-22:00</p>
+      </div>
+      <div class="section">
+        <p class="title">报名规则</p>
+        <p>1.成员在5人以上的战队均可参与报名；</p>
+        <p>2.在电竞侠上创建战队的队长即可报名；</p>
+        <p>3.仅需队长一人报名即可，队员无须重复报名。</p>
+        <p>4.将安排64支战队进行比赛。比赛名额按签到顺序先到先得；</p>
+        <p>5.所有参赛队员必须为游戏中同一战队成员；</p>
+        <p>6.“世界大战”、“未来战场”服的战队因服务器限制原因无法参与比赛，不便之处敬请谅解。</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛模式</p>
+        <p>服务器：所有服务器（世界大战服、未来战场服除外）</p>
+        <p>比赛地图：5v5天梯之战（开房间、有密码）</p>
+        <p>比赛机制：预选赛全部一局决胜，攻擂赛三局两胜</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛规则</p>
+        <p>1、成功入围比赛的战队，将在报名结束后由系统通知队长领取比赛券；</p>
+        <p>2、由电竞侠承办随机匹配分组</p>
+        <p>3、创建房间：比赛准备时间（15分钟）内，由每组红队队长在游戏内建好房间：5v5天梯之战，设置房间密码，并将房号、密码告诉蓝队队长（建议双方队长提前在游戏内加为好友，方便邀请）；</p>
+        <p>4、开始比赛：房间内所有成员进入“准备”状态后，即可开始比赛；</p>
+        <p>5、提交比赛结果：比赛结束后，胜出的一方需要在一小时内将“胜出截图、战绩截图”在比赛系统上传</p>
+        <p>6、如果某方战队直接弃权，则另一方队长需将双方对话（对方承认弃权）的画面截图并上传；如果某方战队在比赛准备时间（15分钟）内一直不出席，则另一方队长需截图证明对方在比赛结束时间内仍未回复的画面截图并上传。</p>
+        <p>7、本次比赛设置准备时间，双方成员必须在准备时间内准时出席并开始比赛，否则视为主动弃权</p>
+        <p>8、为保证比赛进度，经对阵双方协商后比赛可以提前进行，但不允许延后</p>
+        <p>9、取消比赛录制，欢迎选手在直播平台对赛事实况进行第一视角直播（需在直播房名内带有“电竞侠”字眼）</p>
+      </div>
+    </div>
+<!--虚荣-->
+    <div id="xr" class="cont hide">
+      <div class="section">
+        <p class="title">报名方式</p>
+        <p>官网报名/App端内报名，报名后请加入比赛交流QQ群511421257，并请下载电竞侠APP准时签到、参赛</p>
+      </div>
+      <div class="section">
+        <p class="title">活动奖励</p>
+        <p>第一周攻擂战胜者：5000RMB</p>
+        <p>守擂成功奖金翻倍，封顶40000RMB</p>
+        <p>冠军：2000RMB+攻擂赛挑战资格</p>
+        <p>亚军：亚军ICE大礼包+300香蕉</p>
+        <p>四强：四强ICE大礼包+200香蕉</p>
+        <p>八强：100香蕉</p>
+      </div>
+      <div class="section">
+        <p class="title">赛程安排</p>
+        <p>报名：</p>
+        <p class="pl3">第一周3月4日-3月7日17:30</p>
+        <p class="pl3">第二周3月8日-3月14日17:30</p>
+        <p class="pl3">第三周3月15日-3月21日17:30</p>
+        <p class="pl3">第四周3月22日-3月28日17:30</p>
+        <p>签到：</p>
+        <p class="pl3">每周一17:30-3月7日18:30</p>
+        <p>比赛：</p>
+        <p class="pl3">每周一</p>
+        <p class="pl3">第一轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">每周二</p>
+        <p class="pl3">第二轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">第三轮准备时间20:30-20:45</p>
+        <p class="pl6">比赛时间20:30-21:30</p>
+        <p class="pl3">每周三</p>
+        <p class="pl3">第四轮准备时间19:00-19:15</p>
+        <p class="pl6">比赛时间19:00-20:00</p>
+        <p class="pl3">第五轮准备时间20:00-20:15</p>
+        <p class="pl6">比赛时间20:00-21:00</p>
+        <p class="pl3">决赛&emsp;准备时间21:00-21:15</p>
+        <p class="pl6">比赛时间21:00-22:00</p>
+        <p class="pl3">周六</p>
+        <p class="pl3">攻擂赛准备时间19:00-19:30</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+      </div>
+      <div class="section">
+        <p class="title">报名规则</p>
+        <p>1.成员在3人以上的战队均可参与报名；</p>
+        <p>2.仅需队长一人报名即可，队员无须重复报名。</p>
+        <p>3.将安排64支战队进行比赛。比赛名额按签到顺序先到先得；</p>
+        <p>4.比赛服务器为国服，请使用中国APPLE STORE原版虚荣或谷歌市场版本虚荣进行游戏，不便之处敬请谅解。</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛模式</p>
+        <p>服务器：中国大陆版虚荣vainglory</p>
+        <p>比赛地图：队伍-好友对战-征召</p>
+        <p>比赛机制：预选赛全部一局决胜，攻擂赛三局两胜</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛规则</p>
+        <p>1、成功入围比赛的战队，将在报名结束后由系统通知队长领取比赛券签到；</p>
+        <p>2、由电竞侠承办随机匹配分组</p>
+        <p>3、创建房间：比赛准备时间（15分钟）内，由每组红队队长在游戏内建好房间：好友对战-征召，并通知蓝队队长（建议双方队长提前在游戏内加为好友，方便邀请）；</p>
+        <p>4、开始比赛：双方队长确认后，即可开始比赛；</p>
+        <p>5、提交比赛结果：比赛结束后，胜出的一方需要在一小时内将“胜出截图、战绩截图“在比赛系统上传</p>
+        <p>6、如果某方战队直接弃权，则另一方队长需将双方对话（对方承认弃权）的画面截图并上传；如果某方战队在比赛准备时间（15分钟）内一直不出席，则另一方队长需截图证明对方在比赛结束时间内仍未回复的画面截图并上传。</p>
+        <p>7、本次比赛设置准备时间，双方成员必须在准备时间内准时出席并开始比赛，否则视为主动弃权</p>
+        <p>8、为保证比赛进度，经对阵双方协商后比赛可以提前进行，但不允许延后；决赛、半决赛必须准时进行。</p>
+        <p>9、取消比赛录制，欢迎选手在直播平台对赛事实况进行第一视角直播（需在直播房名内带有“电竞侠”字眼）</p>
+      </div>
+    </div>
+<!--时空召唤-->
+    <div id="skzh" class="cont hide">
+      <div class="section">
+        <p class="title">报名方式</p>
+        <p>官网报名/App端内报名，报名后请下载电竞侠APP准时签到、参赛</p>
+      </div>
+      <div class="section">
+        <p class="title">活动奖励</p>
+        <p>第一周攻擂战胜者：5000RMB</p>
+        <p>守擂成功奖金翻倍，封顶40000RMB</p>
+        <p>冠军：2000RMB+攻擂赛挑战资格</p>
+        <p>亚军：价值约200元游戏大礼包+300香蕉</p>
+        <p>四强：价值约150元游戏大礼包+200香蕉</p>
+        <p>八强：100香蕉</p>
+      </div>
+      <div class="section">
+        <p class="title">赛程安排</p>
+         <p>报名：</p>
+        <p class="pl3">第一周3月4日-3月7日17:30</p>
+        <p class="pl3">第二周3月8日-3月14日17:30</p>
+        <p class="pl3">第三周3月15日-3月21日17:30</p>
+        <p class="pl3">第四周3月22日-3月28日17:30</p>
+        <p>签到：</p>
+        <p class="pl3">每周一17:30-3月7日18:30</p>
+        <p>比赛：</p>
+        <p class="pl3">每周一</p>
+        <p class="pl3">第一轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">每周二</p>
+        <p class="pl3">第二轮准备时间19:30-19:45</p>
+        <p class="pl6">比赛时间19:30-20:30</p>
+        <p class="pl3">第三轮准备时间20:30-20:45</p>
+        <p class="pl6">比赛时间20:30-21:30</p>
+        <p class="pl3">每周三</p>
+        <p class="pl3">第四轮准备时间19:00-19:15</p>
+        <p class="pl6">比赛时间19:00-20:00</p>
+        <p class="pl3">第五轮准备时间20:00-20:15</p>
+        <p class="pl6">比赛时间20:00-21:00</p>
+        <p class="pl3">决赛&emsp;准备时间21:00-21:15</p>
+        <p class="pl6">比赛时间21:00-22:00</p>
+        <p class="pl3">周六</p>
+        <p class="pl3">攻擂赛准备时间20:00-20:30</p>
+        <p class="pl6">比赛时间20:30-22:00</p>
+      </div>
+      <div class="section">
+        <p class="title">报名规则</p>
+        <p>1.成员在5人以上的战队均可参与报名；</p>
+        <p>2.在电竞侠上创建战队的队长即可报名；</p>
+        <p>3.仅需队长一人报名即可，队员无须重复报名。</p>
+        <p>4.将安排64支战队进行比赛。比赛名额按签到顺序先到先得；</p>
+        <p>5.所有参赛队员必须为游戏中同一战队成员；</p>
+        <p>6.请使用时空召唤官方客户端或标准渠道端进行游戏，不便之处敬请谅解。</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛模式</p>
+        <p>服务器：时空裂隙</p>
+        <p>比赛地图：好友约战-天空竞技场</p>
+        <p>比赛机制：预选赛全部一局决胜，攻擂赛三局两胜</p>
+      </div>
+      <div class="section">
+        <p class="title">比赛规则</p>
+        <p>1、成功入围比赛的战队，将在报名结束后由系统通知队长领取比赛券签到；</p>
+        <p>2、由电竞侠承办随机匹配分组</p>
+        <p>3、创建房间：比赛准备时间（15分钟）内，由每组红队队长在游戏内建好房间：好友约战-天空竞技场，并通知蓝队队长（建议双方队长提前在游戏内加为好友，方便邀请）；</p>
+        <p>4、开始比赛：双方队长在房内聊天室确认后，即可开始比赛；</p>
+        <p>5、提交比赛结果：比赛结束后，胜出的一方需要在一小时内将“胜出截图、战绩截图“在比赛系统上传</p>
+        <p>6、如果某方战队直接弃权，则另一方队长需将双方对话（对方承认弃权）的画面截图并上传；如果某方战队在比赛准备时间（15分钟）内一直不出席，则另一方队长需截图证明对方在比赛结束时间内仍未回复的画面截图并上传。</p>
+        <p>7、本次比赛设置准备时间，双方成员必须在准备时间内准时出席并开始比赛，否则视为主动弃权</p>
+        <p>8、为保证比赛进度，经对阵双方协商后比赛可以提前进行，但不允许延后；决赛、半决赛必须准时进行。</p>
+        <p>9、取消比赛录制，欢迎选手在直播平台对赛事实况进行第一视角直播（需在直播房名内带有“电竞侠”字眼）</p>
+      </div>
+    </div>
+  </div>
+</script>
+
+
+<script src="/public/js/jquery.min.js"></script>
+<script src="/public/js/seajs/sea.js"></script>
+<script src="/public/js/lib/dialog-plus-min.js"></script>
+<script>
+  var verNum = new Date().getTime();
+  seajs.config({
+    base: "/public/js/",
+    map: [[ '.js', '.js?v='+verNum+'' ]]
+  });
+  seajs.use("app/match/index.js");
+</script>
+</body>
+</html>

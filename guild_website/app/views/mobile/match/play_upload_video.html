@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- 投诉爽约提交图片界面 -->
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>提交对阵视频</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	<p class="my-fight-pic-p">仅支持优酷视频地址, 最多可上传5个视频</p>
+	<form id="form" onsubmit="return false;">
+	<input id="api-submit" type="hidden" value="/m/match/submitVideos">
+	<input name="schedulePlayId" type="hidden" value="${schedulePlayId}">
+	<input name="squadId" type="hidden" value="${squadId}">
+	<input id="delVideoIds" name="delVideoIds" type="hidden" value="">
+	
+	
+	<div class="my-fight-video">
+		<!-- 已上传列表 -->
+		#{list items : list, as:'item' } 
+			<div class="text-con" name="existVideos">
+				<div class="text"><input class="t" type="text" value="${item.videoUrl}" videoId='${item.id}'/><span data='${item.id}' class="close"></span></div>
+			</div>
+		#{/list}
+		<div class="text-con" name="addVideos">
+			<div class="text"><input class="t" type="text" value=""/><span class="close"></span></div>
+		</div>
+		<div class="text-con" id="div-add-video">
+			<div id="add-video" class="btn">添加</div>
+		</div>
+	</div>
+	<div class="action-fixed">
+		<div id="submit-btn" class="btn-pic">
+				提交
+		</div>
+	</div>
+	</form>
+	
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+
+<!--提示浮层-->
+<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/video_edit.js"></script>
+<script>
+	JSBridge.callNative("NineGameClient", "hideShareButton");
+</script>
+</body>
+</html>

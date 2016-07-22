@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${matchInfoDTO?.title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+	<div class="info-con">
+		<div class="text">
+           <p><span class="icon-succ"></span>恭喜,报名成功!</p>
+		   <br/>
+           <div align="center"> ${signupTime} 领取比赛入场劵,过期未领取视为放弃比赛资格！</div>
+		</div>
+	</div>
+
+
+	<div id="win1" class="mask-pop alert-win auto-win">
+		<div class="pop-alert">
+			<div class="title">提示</div>
+			<div class="con">
+				确定将比赛奖励发到 <a href="javascript:void(0);"><span class="em">"${guildName}"战队</span></a>，由该队长分配？
+			</div>
+			<div class="btns">
+				<a class="btn-default" style="display: block" href="/m/match/sign_success_submit.html?id=${id}&matchInfoId=${matchInfoId}&squadId=${squadId}&userId=${userId}">退出战队，自动建战队</a>
+				<a class="btn-em" style="display: block" href="/m/match/sign_success.html?id=${id}&matchInfoId=${matchInfoId}&guildName=${encodeGuildName}&guildId=${guildId}&isNew=0&userId=${userId}">确认</a>
+			</div>
+		</div>
+	</div>
+
+	<div id="win2" class="mask-pop alert-win" style="display: none;">
+		<div class="pop-alert">
+			<div class="title">提示</div>
+			<div class="con">
+				
+			</div>
+			<div class="btns">
+				<div class="btn-default" data-action="close">我知道了</div>
+			</div>
+		</div>
+	</div>
+<script src="/public/js/mobile/match/zepto.min.js"></script>
+<script src="/public/js/mobile/match/sign-succ.js"></script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${matchAgainstListDTO?.matchInfoDTO?.title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+ #{if matchAgainstListDTO?.matchInfoDTO?.topImgUrl }
+	<div class="top"><img src="${matchAgainstListDTO?.matchInfoDTO?.topImgUrl}"></div>
+ #{/if}
+	<ul class="act-nav">
+		<li><a href="/m/match/gift_rule.html?matchInfoId=${ matchAgainstListDTO?.matchInfoDTO?.id }">赛规&奖励</a></li>
+		<li class="on"><a href="#">赛程</a></li>
+		<li><a href="/m/match/recom_video.html?matchInfoId=${ matchAgainstListDTO?.matchInfoDTO?.id }">参赛视频</a></li>
+	</ul>
+	<div class="match">
+	#{if myPlayItemDTO != null}
+	<div class="my-info" onclick="openMyPlay(${myPlayItemDTO?.id})">我的对战信息</div>
+	#{/if}
+	#{if matchAgainstListDTO?.matchScheduleDTOList }
+	<div class="time-list">
+		<ul data-role="scroll-list">
+		#{list items:matchAgainstListDTO?.matchScheduleDTOList, as:'ms' }
+			<li #{if ms.id == matchAgainstListDTO?.selectMatchScheduleId } class="cur" #{/if}>
+				<a href="javascript:void(0);" onclick="openMatchSchedule(${ matchAgainstListDTO?.matchInfoDTO?.id },${ ms.id })">
+					<span class="label1">${ms.title}</span>
+					<span class="label2">${ms.startDate}</span>
+					<span class="label3">${ms.startHourMinute}</span>
+				</a>
+			</li>
+		#{/list}
+		</ul>
+	</div>
+	    <input type='hidden' id='translate3dValue' value="${ translate3dValue }"/>
+	    <input type='hidden' id='pageNO' value='${pageNO}' />
+	    <input type='hidden' id='pageSize' value='${pageSize}' />
+	    <input type='hidden' id='userType' value='${userType}' />
+	    <input type='hidden' id='matchInfoId' value='${matchInfoId}' />
+	    <input type='hidden' id='matchScheduleId' value='${matchScheduleId}' />
+	    <input type='hidden' id='myPlayItemId' value='${myPlayItemDTO?.id}' />
+	    #{if matchAgainstListDTO?.matchSchedulePlayDTOList}
+	   <ul id="ajaxContainer" class="match-list">
+	    #{list items:matchAgainstListDTO?.matchSchedulePlayDTOList, as:'msp' }
+		<li class="item-match">
+			<a href="javascript:void(0);" onclick="openPlayDetail(this)" data-id="${msp.id}">
+			#{if msp?.hasVideo }
+			<div class="view-video"><span class="icons icon-video"></span>观看比赛视频</div>
+	    	#{/if}
+	    	<div class="item-content">
+			<div class="pic1"><img src="#{if msp.guildLogoUrl}${msp.guildLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54"></div>
+			<div class="name1">${msp.squadName}</div>
+			<div class="pic2"><img src="#{if msp.againstGuildLogoUrl}${msp.againstGuildLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54"></div>
+			<div class="name2">${msp.againstSquadName}</div>
+			<div class="result">
+			#{if msp.score == null} #{if matchEndFlag } 0:0 #{/if} #{else}VS#{/else}#{/if}
+			#{if msp.score != null} ${msp.score}:${msp.againstScore} #{/if}
+			</div>
+			<div class="state">
+			#{if matchEndFlag || msp.score != null }已结束#{/if} #{else}比赛中#{/else}</div>
+			</div>
+			</a>
+		</li>
+		#{/list}
+		</ul>
+		<!-- 加载模块按钮 -->
+		<div class="module-more loading" id="loading">
+			<div id="loadingTip" class="item"><span class="o-modify-pull">加载更多</span></div>
+			<div id="noMoreTip" class="item">对不起，已经没有下一页数据！</div>
+			<div id="errorTip" class="item">网络繁忙，点击重试</div>
+			<div id="moreBtn" class="item"><span class="o-modify-pull">加载更多</span></div>
+		</div>
+		<!-- 列表模块.end -->	
+		#{/if}
+		#{else}
+		<div class="none-info-match">
+			<div class="none-info-con">
+				<img alt="暂未安排对阵"  src="/public/images/mobile/match/ic_error_null.png" width="60" height="64" />
+				<div class="text">暂未安排对阵</div>
+			</div>
+		</div>	
+		#{/else}
+		</div>
+		#{/if}
+		#{else}
+		<div class="none-info-match">
+			<div class="none-info-con">
+				<img alt="报名未结束，暂无赛程"  src="/public/images/mobile/match/ic_error_null.png" width="60" height="64" />
+				<div class="text">报名#{if isMatchApplyEnd }已#{/if}#{else}未#{/else}结束，暂无赛程</div>
+			</div>
+		</div>	
+		#{/else}
+</body>
+<script type="text/javascript" src="/public/js/mobile/match/zepto_touch_ai.js"></script>
+<!--  <script src="/public/js/mobile/match/zepto.min.js"></script> -->
+<script src="/public/js/mobile/match/match.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script type="text/javascript" src="/public/js/mobile/match/scroll_bottom_load.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/match_play_ajax_list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/list.js"></script>
+
+<script>
+var itemWidth=$(".item-video").width();; // 获取item的宽度
+var itemHeight=itemWidth*158/280;
+$(".item-video img").height(itemHeight);
+	function openPlayDetail(ele) {
+		JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		var id = $(ele).attr('data-id');
+		var title = "${matchAgainstListDTO?.matchInfoDTO?.title}";
+		JSBridge.callNative("NineGameClient", "openPlayDetailPage", {"path": "/m/match/schedulePlayDetail.html", "title": title, "id": id });
+	}
+	
+	function openMyPlay(id) {
+		window.location.href = "/m/match/playDetail.html?id=" + id;
+	}
+	
+	function openMatchSchedule(matchId,scheduleId){
+		var val=$('#translate3dValue').val();
+		window.location.href ="/m/match/match.html?matchInfoId="+matchId+"&matchScheduleId="+scheduleId+"&translate3dValue="+val;
+	}
+</script>
+</html>

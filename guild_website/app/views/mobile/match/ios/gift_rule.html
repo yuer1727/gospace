@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  #{if userType != 1}
+  <title>奖励、规则</title>
+  #{/if}
+  #{else}
+  <title>${matchRakingAndAwardDTO?.matchInfoDTO?.title}</title>
+  #{/else}
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+  
+  <style>
+  	.action-fixed.active {
+  		display: block;
+  	}
+  	.btn-pic.btn-red.active {
+  		width: 95%;
+  		width:-moz-calc(100% - (20px));
+		width:-webkit-calc(100% - (20px));
+  		width: calc(100% - (20px));
+  	}
+  </style>
+</head>
+<body>
+  #{if matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl }
+  <div class="top"><img src="${matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl}"></div>
+  #{/if}
+  <!--  
+  <ul class="act-nav">
+    <li class="on"><a href="#">赛规&奖励</a></li>
+    
+    <li><a href="/m/match/match.html?matchInfoId=${ matchRakingAndAwardDTO?.matchInfoDTO?.id }">赛程</a></li>
+    <li><a href="/m/match/recom_video.html?matchInfoId=${matchRakingAndAwardDTO?.matchInfoDTO?.id}">参赛视频</a></li>
+    
+  </ul>
+  -->
+  <!-- 获奖名单、奖励、规则 -->
+  <div class="win-gift-rule">
+ <!-- 获奖名单 begin -->
+ <input type='hidden' id='userType' value='${userType}' />
+ #{if matchRakingAndAwardDTO?.matchRankingAwardDTOList}
+    <div class="wrap no-margin">
+      <div class="top-title"><h1>获奖名单</h1></div>
+      <div class="win">
+      #{list items:matchRakingAndAwardDTO?.matchRankingAwardDTOList, as:'mr_list' }
+      %{ count=mr_list.size();}%
+      #{if $count == 1}
+      #{list items:mr_list, as:'mr' }
+        <div class="title">${ mr.priceDesc }</div>
+        <div class="win-con no-${ count++ }">
+          <div class="pic show_guild" url="/m/match/guildShow?userId=${ mr.matchApplyDTO?.userId }">
+            <img src="#{if mr.guildLogoUrl}${ mr.guildLogoUrl }#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+            <div class="no"></div>
+            <div class="name">${ mr?.matchApplyDTO?.squadName }</div> 
+          </div>
+          <div class="con">${ mr.memo }</div>
+        </div>
+         #{/list}
+        #{/if}
+        #{else}
+	        #{if $count > 1}
+	        #{set title: "其他" /}
+	        %{title=mr_list.get(0).getPriceDesc();}%
+	        <div class="title">${title}</div>
+	        #{/if}
+	        <ul class="other-win">
+	        #{list items:mr_list, as:'mr' }
+	          <li class="pic show_guild" url="/m/match/guildShow?userId=${ mr.matchApplyDTO?.userId }">
+	          <img src="#{if mr.guildLogoUrl}${ mr.guildLogoUrl }#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+	          <div class="name">${ mr.matchApplyDTO.squadName }</div>
+	          </li>
+	       	#{/list}
+	        </ul>
+      	#{/else}
+        #{/list}
+       </div>
+    </div>
+    #{/if}
+    <!-- 获奖名单 end -->
+    <!-- 奖励 begin -->
+    #{if awardItemDTOs}
+    <div class="wrap wrap-jiangli">
+      <div class="top-title"><h1>赛事奖励</h1></div>
+      <ul class="gift-list">
+      #{list items:awardItemDTOs,as:'ai'}
+        <li>
+          <div class="item-gift">
+            <div class="pic"><img src="${ai.award_img_url}" width="90" height="90"></div>
+            <div class="name">${ai?.award_desc}</div>
+          </div>
+        </li>
+       #{/list}
+      </ul>
+    </div>
+    #{/if}
+    <!-- 奖励 end -->
+
+    <!-- 规则 begin -->
+    #{if matchRakingAndAwardDTO?.matchInfoDTO?.description}
+	<div class="wrap wrap-guize">
+      <div class="top-title">
+        <h1>赛事规则</h1>
+      </div>
+      <div class="match-rule">
+       ${matchRakingAndAwardDTO?.matchInfoDTO?.description?.raw()}
+      </div>
+    </div>
+    #{/if}
+    #{if stateType == 4}
+    <br/>
+    <br/>
+    <br/>
+    #{/if}
+    <!-- 规则 end -->
+    
+    <!-- 报名 start -->
+    #{if stateType == 1}
+    <div class="action-fixed">
+			<div class="btn-pic btn-dis"> ${applyTime} 马上报名 </div>
+	</div>
+    #{/if}
+    
+    #{if stateType == 2}
+    <div class="action-fixed">
+		<a href="javascript:void(0);" class="btn-pic btn-dis">你已领比赛入场劵</a>
+	</div>
+    #{/if}
+    
+    #{if stateType == 3}
+    	<div class="action-fixed">
+			<div class="btn-pic btn-dis"> ${ signupTime } 领比赛入场劵 </div>
+		</div>
+    #{/if}
+    
+    #{if stateType == 4}
+   	 	<div class="action-fixed active" id="oldGetSignup">
+		 	<input type="hidden"  id="ajaxUrl" value="/m/match/signupMatch?matchInfoId=${matchInfoDTO?.id}&squadId=${matchInfoDTO?.squadId}"/>
+		 	<a class="btn-pic btn-red active" id="signupMatch">领比赛入场劵</a>
+		 	<div class="act-rule" style="font-size:12px;padding-top:10px">
+      			领比赛入场劵,即表示你同意<a href="/m/match/match_protocol.html?id=${matchInfoDTO?.id}">《电竞侠参赛协议》</a>
+      		</div>
+		</div>
+		<div class="action-fixed" id="signupedMatch">
+			<div class="btn-pic btn-dis">已领券，领券时间结束后公布对战表 </div>
+		</div>
+    #{/if}
+    
+    
+    #{if stateType == 6}
+   		<div class="action-fixed">
+		<a href="/m/match/sign.html?matchInfoId=${matchInfoDTO?.id}&userId=${userId}&from=kk" class="btn-pic " id="send">马上报名</a>
+		</div>
+    #{/if}
+    
+    #{if stateType == 7}
+    <div class="action-fixed">
+    	<!-- 
+		<div class="btn-sign btn-sign-rew" style="margin-right:0px;"> ${applyTime} 报名时间已过 </div>
+	 	-->		
+		<a href="javascript:void(0);" class="btn-pic btn-dis"> ${applyTime} 报名时间已过</a>	
+	</div>
+    #{/if}
+<!--下载电竞侠浮层 开始-->
+<div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    <a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+</div>
+<!-- 提示 -->
+<div id="alert-win" class="mask-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+</div>
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+	<script src="/public/js/mobile/match/showGuild.js"></script>
+	<script src="/public/js/mobile/match/signupMatch.js"></script>
+</div>
+</body>
+</html>

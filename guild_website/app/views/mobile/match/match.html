@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{set matchId:matchAgainstListDTO?.matchInfoDTO?.id /}
+	#{if userType == 1 || userType == 3}
+  	<title>${matchAgainstListDTO?.matchInfoDTO?.title}</title>
+	#{/if}#{else}<title>赛事列表</title> #{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+  #{if userType != 1 && userType != 3 && !isShareToOut}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchAgainstListDTO?.matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+  #{/if}
+  #{elseif userType != 1 && userType != 3 && isShareToOut}
+  		#{include file="mobile/match/share_head.html" /}
+  #{/elseif}
+ 
+ 
+ #{if matchAgainstListDTO?.matchInfoDTO?.topImgUrl }
+  	<div class="top">
+	<img src="${matchAgainstListDTO?.matchInfoDTO?.topImgUrl}">
+	 <div class="tag">
+     #{if matchAgainstListDTO?.matchInfoDTO?.area}
+      <span class="item">${matchAgainstListDTO?.matchInfoDTO?.area}</span>
+     #{/if}
+     #{if matchAgainstListDTO?.matchInfoDTO?.level}
+      <span class="item">${matchAgainstListDTO?.matchInfoDTO?.level}</span>
+     #{/if}
+     #{if matchAgainstListDTO?.matchInfoDTO?.spreadType}
+      <span class="item">${matchAgainstListDTO?.matchInfoDTO?.spreadType}</span>
+     #{/if}
+      #{list items:awardTypes, as:'at' }
+      <span class="item">${at?.name}</span>
+      #{/list}
+    </div>
+	</div>
+ #{/if}
+	<ul class="act-nav">
+		<li><a href="/m/match/gift_rule.html?matchInfoId=${ matchAgainstListDTO?.matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}"><span class="in">赛规</span></a></li>
+		<li class="on"><a href="#"><span class="in">赛程</span></a></li>
+		<li><a href="/m/match/match_result.html?matchInfoId=${ matchAgainstListDTO?.matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}"><span class="in">结果</span></a></li>
+		#{if userType != 3}
+		<li><a href="/m/match/recom_video.html?matchInfoId=${ matchAgainstListDTO?.matchInfoDTO?.id }#{if isShareToOut}&from=kkshare#{/if}"><span class="in">视频</span></a></li>
+		#{/if}
+	</ul>
+	#{if matchAgainstListDTO?.matchScheduleDTOList }
+	<div class="match">
+	<div class="time-list">
+		<ul data-role="scroll-list">
+		#{list items:matchAgainstListDTO?.matchScheduleDTOList, as:'ms' }
+			<li #{if ms.id == matchAgainstListDTO?.selectMatchScheduleId } class="cur" #{/if}>
+				<a href="javascript:void(0);" onclick="openMatchSchedule(${ matchAgainstListDTO?.matchInfoDTO?.id },${ ms.id })">
+					<span class="label1">${ms.title}</span>
+					<span class="label2">${ms.startDate}</span>
+					<span class="label3">${ms.startHourMinute}</span>
+				</a>
+			</li>
+		#{/list}
+		</ul>
+	</div>
+	    <input type='hidden' id='translate3dValue' value="${ translate3dValue }"/>
+	    <input type='hidden' id='pageNO' value='${pageNO}' />
+	    <input type='hidden' id='pageSize' value='${pageSize}' />
+	    <input type='hidden' id='userType' value='${userType}' />
+	    <input type='hidden' id='matchInfoId' value='${matchInfoId}' />
+	    <input type='hidden' id='matchScheduleId' value='${matchScheduleId}' />
+	    <input type='hidden' id='myPlayItemId' value='${myPlayItemDTO?.id}' />
+	    #{if matchAgainstListDTO?.matchSchedulePlayDTOList}
+	   <ul id="ajaxContainer" class="match-list">
+	    #{list items:matchAgainstListDTO?.matchSchedulePlayDTOList, as:'msp' }
+		<li class="item-match">
+		#{if userType==1 || userType==3 }
+			<a href="javascript:void(0);" onclick="openPlayDetail(this)" data-id="${msp.id}">
+		#{/if}
+		#{else}
+		    <a href="javascript:void(0);" onclick="openDownloadKK()">	
+		#{/else}
+			#{if msp?.hasVideo }
+			#{if userType != 3}
+			<div class="view-video"><span class="icons icon-video"></span>观看比赛视频</div>
+			#{/if}
+	    	#{/if}
+	    	<div class="item-content">
+			<div class="pic1"><img src="#{if msp.guildLogoUrl}${msp.guildLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54"></div>
+			<div class="name1">${msp.squadName}</div>
+			<div class="pic2"><img src="#{if msp.againstGuildLogoUrl}${msp.againstGuildLogoUrl}#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54"></div>
+			<div class="name2">${msp.againstSquadName}</div>
+			<div class="result">
+			#{if msp.score == null} #{if matchEndFlag } 0:0 #{/if} #{else}VS#{/else}#{/if}
+			#{if msp.score != null} ${msp.score}:${msp.againstScore} #{/if}
+			</div>
+			<div class="state">
+			#{if matchEndFlag || msp.score != null }已结束#{/if} #{else}比赛中#{/else}</div>
+			</div>
+			</a>
+		</li>
+		#{/list}
+		</ul>
+		<div class="module-more loading" id="loading">
+			<div id="loadingTip" class="item"><span class="o-modify-pull">加载更多</span></div>
+			<div id="noMoreTip" class="item">对不起，已经没有下一页数据！</div>
+			<div id="errorTip" class="item">网络繁忙，点击重试</div>
+			<div id="moreBtn" class="item"><span class="o-modify-pull">加载更多</span></div>
+		</div>
+		</div>
+		#{/if}
+		#{else}
+		<div class="none-info-match">
+			<div class="none-info-con">
+				<img alt="对战信息安排中，请耐心等候！"  src="/public/images/mobile/match/ic_error_null.png" width="120" height="120" />
+				<div class="text">对战信息安排中，请耐心等候！</div>
+			</div>
+		</div>	
+		#{/else}
+		
+		#{/if}
+		#{else}
+		<div class="none-info-match">
+			<div class="none-info-con">
+				<img alt="对战信息安排中，请耐心等候！"  src="/public/images/mobile/match/ic_error_null.png" width="120" height="120" />
+				<div class="text">对战信息安排中，请耐心等候！</div>
+			</div>
+		</div>	
+		#{/else}
+		
+		
+		#{if (userType == 1 || userType == 3) && playCount > 0}
+		<div class="action-fixed">
+			<a href="/m/match/getUnFinishPlayDetail?matchInfoId=${matchInfoId}" class="btn-pic" id="send">我的赛程</a>
+		</div>
+		#{/if}
+		
+<div class="mask-pop" id="win1" style="display:none">
+	<div class="pop-alert2">
+	    <div class="pop-title">请下载电竞侠</div>
+	    <div class="logo"><img src="http://www.kkyuyin.com/public/images/mobile/logo.png" width="60" height="60"></div>
+	    #{if userType != 1 && userType != 3 && !isShareToOut}
+	    	<a href="javascript:void(0);" onclick="downloadkk()" class="btn-down">立即下载</a>
+  		#{/if}
+  		#{elseif userType != 1 && userType != 3 && isShareToOut}
+  			<a href="javascript:void(0);" onclick="downloadkk4Share('share_match', 'WD_88', '${matchId}')" class="btn-down">立即下载</a>
+  		#{/elseif}
+	    <div class="btn-close" onclick="closeWin()"></div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="/public/js/mobile/match/zepto_touch_ai.js"></script>
+<script src="/public/js/mobile/match/match.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script type="text/javascript" src="/public/js/mobile/match/scroll_bottom_load.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/match_play_ajax_list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/showGuild.js"></script>
+
+<script>
+var itemWidth=$(".item-video").width();; // 获取item的宽度
+var itemHeight=itemWidth*158/280;
+$(".item-video img").height(itemHeight);
+	function openPlayDetail(ele) {
+		JSBridge.isIOS = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/ios") > -1 ||  navigator.userAgent.indexOf("com.tongmo.kkios") > -1 || navigator.userAgent.indexOf("com.tongmo.kkdevios") > -1 );
+		if (!JSBridge.isIOS) {
+			JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		}
+		
+		var id = $(ele).attr('data-id');
+		var title = "${matchAgainstListDTO?.matchInfoDTO?.title}";
+		JSBridge.callNative("NineGameClient", "openPlayDetailPage", {"path": "/m/match/schedulePlayDetail.html", "title": title, "id": id });
+	}
+	
+	function openMyPlay(id) {
+		window.location.href = "/m/match/playDetail.html?id=" + id;
+	}
+	
+	
+	function openMatchSchedule(matchId,scheduleId){
+		var val=$('#translate3dValue').val();
+		window.location.href ="/m/match/match.html?matchInfoId="+matchId+"&matchScheduleId="+scheduleId+"&translate3dValue="+val +"#{if isShareToOut}&from=kkshare#{/if}";
+	}
+</script>
+</html>

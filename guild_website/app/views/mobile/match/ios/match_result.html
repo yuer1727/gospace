@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  #{if userType != 1}
+  <title>奖励、规则</title>
+  #{/if}
+  #{else}
+  <title>${matchRakingAndAwardDTO?.matchInfoDTO?.title}</title>
+  #{/else}
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+  
+  <style>
+  	.action-fixed.active {
+  		display: block;
+  	}
+  	.btn-pic.btn-red.active {
+  		width: 95%;
+  		width:-moz-calc(100% - (20px));
+		width:-webkit-calc(100% - (20px));
+  		width: calc(100% - (20px));
+  	}
+  </style>
+</head>
+<body>
+ 	#{if userType != 1}
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchRakingAndAwardDTO?.matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+  #{/if}
+  #{if matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl }
+  <div class="top"><img src="${matchRakingAndAwardDTO?.matchInfoDTO?.topImgUrl}"> </div>
+  #{/if}
+  <ul class="act-nav">
+    <li><a href="/m/match/gift_rule.html?matchInfoId=${ matchRakingAndAwardDTO?.matchInfoDTO?.id }"><span class="in">赛规</span></a></li>
+    #{if matchRakingAndAwardDTO?.hasSchedule || isMatchTime }
+    <li><a href="/m/match/match.html?matchInfoId=${ matchRakingAndAwardDTO?.matchInfoDTO?.id }"><span class="in">赛程</span></a></li>
+    #{/if}
+    <li class="on"><a href="#"><span class="in">结果</span></a></li>
+    <li><a href="/m/match/recom_video.html?matchInfoId=${matchRakingAndAwardDTO?.matchInfoDTO?.id}"><span class="in">视频</span></a></li>
+  </ul>
+  
+ <div class="win-gift-rule">
+  
+ <input type='hidden' id='userType' value='${userType}' />
+ #{if matchRakingAndAwardDTO?.matchRankingAwardDTOList}
+    <div class="wrap no-margin">
+      <div class="top-title"><h1>获奖名单</h1></div>
+      <div class="win">
+      #{list items:matchRakingAndAwardDTO?.matchRankingAwardDTOList, as:'mr_list' }
+      %{ count=mr_list.size();}%
+      #{if count == 1}
+      #{list items:mr_list, as:'mr' }
+        <div class="title">${ mr?.priceDesc }</div>
+        <div class="win-con no-${ mr_list_index }">
+          <div class="pic show_guild" url="/m/match/guildShow?userId=${ mr.matchApplyDTO?.userId }">
+            <img src="#{if mr.guildLogoUrl}${ mr.guildLogoUrl }#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+            <div class="no"></div>
+            <div class="name">${ mr?.matchApplyDTO?.squadName }</div> 
+          </div>
+          <div class="con">${ mr?.memo }</div>
+        </div>
+         #{/list}
+        #{/if}
+        #{else}
+	        #{if count > 1}
+	        #{set title: "其他" /}
+	        %{title=mr_list.get(0).getPriceDesc();}%
+	        <div class="title">${title}</div>
+	        #{/if}
+	        <ul class="other-win">
+	        #{list items:mr_list, as:'mr' }
+	          <li class="pic show_guild" url="/m/match/guildShow?userId=${ mr.matchApplyDTO?.userId }">
+	          <img src="#{if mr.guildLogoUrl}${ mr.guildLogoUrl }#{/if}#{else} /public/images/mobile/match/no-guild.png #{/else}" width="54" height="54">
+	          <div class="name">${ mr.matchApplyDTO.squadName }</div>
+	          </li>
+	       	#{/list}
+	        </ul>
+      	#{/else}
+        #{/list}
+       </div>
+    </div>
+    #{/if}
+    #{else}
+    <div class="none-info-match">
+			<div class="none-info-con">
+				<img alt="赛事还在进行中，暂未公布获奖名单"  src="/public/images/mobile/match/ic_error_null.png" width="60" height="64" />
+				<div class="text">赛事还在进行中，暂未公布获奖名单</div>
+			</div>
+		</div>	
+    #{/else}
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+	<script src="/public/js/mobile/match/showGuild.js"></script>
+</div>
+</body>
+</html>

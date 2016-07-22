@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>自由之战3F职业联赛 - 电竞侠</title>
+	<meta name="keywords" content="电竞侠,自由之战,自由之战联赛,3F联赛,FPL联赛,视频直播,战队联赛,战队报名,战队排名" />
+	<meta name="description" content="电竞侠——最火的手游战队平台，全球首款为手游战队打造的免费手机游戏语音聊天软件，集领礼包、混战队、即时聊天为一体。实现用户在时空猎人、我叫MT、天天飞车、天天酷跑、放开那三国、刀塔传奇等多款手机网游内实时语音。" />
+	<link rel="stylesheet" type="text/css" href="/public/css/ziyou.css?v001">
+</head>
+<body>
+	<div class="main">
+			<h1>自由之战3F职业联赛</h1>
+			<div class="bg1"></div>
+			<div class="bg2"></div>
+			<div class="bg3"></div>
+			<a href="ziyou.html" class="btn" >报名</a>
+	</div>
+	#{include file="/common/footer.html" /}
+	
+	<!--浮层 报名成功-->
+	<div class="pop-info">
+		<div class="head">填写报名信息</div>
+		<div class="info-con">
+			
+			<div class="text"><span class="icon-succ"></span>恭喜,报名成功!<a href="#" id="down_url_android" target="_self">点击下载电竞侠</a>了解最新比赛通知.</div>
+		</div>
+		<a class="close" href="ziyou.html">关闭</a>
+	</div>
+	
+</body>
+<script src="/public/js/app/ziyou/jquery.js"></script>
+<script>
+	var downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk';
+	var url= window.location.search;
+	if(url.indexOf("?")!=-1)
+	{
+	    var params = url.substring(1).split("?");
+	    var froms=params[0].split("=");
+	    if(froms[0]=='from')
+	    {
+	        downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk?from='+froms[1];
+	    } 
+	}
+	
+	$(function() {
+	   $('#down_url_android').click(function() {
+	       $.post("@{KKHomePage.downloadLog}",{platform:'android'},function(){
+	           document.location.href = downloadUrl;
+	       });
+	   });
+	});
+</script> 
+</html>

@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${matchInfoDTO?.title}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	<!--  
+	<div class="top"><img src="${matchInfoDTO?.topImgUrl}"></div>
+	<ul class="act-nav">
+		<li class="on"><a href="#">报名</a></li>
+		<li><a href="#">赛程</a></li>
+		<li><a href="#">奖品</a></li>
+		<li><a href="#">规则</a></li>
+		<li><a href="#">视频</a></li>
+	</ul>
+	-->
+	<div class="sign-form">
+		<form method="post" action="/m/match/createMatchApply" class="fight" id="form1">
+		<input type="hidden" id="matchInfoId" name="matchInfoId" value="${matchInfoDTO.id}" />
+		<input type="hidden" id="userId" name="userId" value="${userId}"  />
+		<input type="hidden" id="mobile" name="mobile" value="${mobile}" />
+		<input type="hidden" id="from" name="from" value="${from}"	/>
+		<input id="api-upload" type="hidden" value="/m/match/uploadImgBase64" />
+		<input id="upload-name" type="hidden" value="file" />
+		<input type="hidden" id="applyInputContent" name="applyInputContent" />
+		<input type="hidden" id="imgUploadContent" name="imgUploadContent" />
+		<div class="row"> 
+			<label><span class="em">*</span>战队名称(游戏内):</label>
+			<div class="con">
+				<input  type="text" class="input-text required" id="squadName" name="squadName" maxlength="15"/>
+			</div>
+		</div>
+		
+		#{list items:applyInputItemDTOs, as:'aii' }
+		<div class="row"> 
+			<label>
+				#{if aii.required == "true"}
+					<span class="em">*</span>
+				#{/if}
+				${aii.title}
+			</label>
+			<div class="con" nameFlag="inputDataGroup">
+				<input type="hidden" nameFlag="title" value="${aii.title}"/>
+				<input type="text" class="input-text #{if aii.required == 'true'}required#{/if}" nameFlag="content" maxlength="${aii.maxLength}" inputType="${aii.inputType}" />
+			</div>
+		</div>
+		#{/list}
+		<div class="row">
+		<label><span class="em">*</span>比赛服务器:</label>
+			  <div class="con">
+				<div class="con-select">
+					<input type="text" class="input-text required" id="server" readOnly="true" value="请选择比赛服务器" name="matchServer" />
+					<div class="icon-arrow"></div>
+					<ul class="server-list hide">
+						#{list items:serverList, as:'sl' }
+							<li value="${ sl }">${ sl }</li>
+						#{/list}
+					</ul>
+				</div>
+			</div>
+		</div>
+		#{list items:uploadImgItemDTOs, as:'iii' }
+		<div class="row"> 
+			<label>
+				<span class="em">*</span>
+				${iii.title}
+			</label>
+			<div class="result-con" nameFlag="imgUploadGroup">
+				<input type="hidden" nameFlag="title" value="${iii.title}"/>
+				<div nameFlag="fileBtn" class="btn-pic" style="border: 1px solid #E5E5E5; background-color:#fff;">
+					<input nameFlag="fileInput" type="file" class="file-input" accept="image/*">
+					<input nameFlag="fileRemoteUrl" type="hidden" class="required" />
+					<span style="color: #000;">点击上传</span>
+				</div>
+				<ul nameFlag="imgList" class="img-list">
+				</ul>
+			</div>
+		</div>
+		#{/list}
+		<div class="con-tips">若提交不成功联系QQ:17342925</div>
+		<input type="button" class="btn-sub" value="提交" id="send" />
+		<div><span style="color:red;" id="errorTips"></span></div>
+		</form>
+	</div>
+	
+	<!--提示浮层-->
+	<div id="alert-win" class="mask-pop down-pop alert-win" style="display: none;">
+	<div class="pop-alert">
+		<div class="title">提示</div>
+		<div class="con"></div>
+		<div class="btns">
+			<div class="btn-em" data-action="close">确定</div>
+		</div>
+	</div>
+	</div>
+	<script src="/public/js/mobile/jsbridge/sdk-debug.js"></script>
+	<script src="/public/js/mobile/jquery2/jquery-2.1.0.js"></script>
+	<script src="/public/js/mobile/match/canvas-to-blob.min.js"></script>
+	<script src="/public/js/mobile/match/form.js"></script>
+	<script src="/public/js/mobile/match/file_imgload.js"></script>
+  <script>
+  </script>
+</body>
+</html>

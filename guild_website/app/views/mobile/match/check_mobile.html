@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	#{if userType == 1}
+  	<title>${matchInfoDTO?.title}</title>
+	#{/if}
+	#{else}
+	<title>报名</title>
+	#{/else}
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	#{if userType != 1}	
+	<header class="header">
+		<a href="/m/match/index.html" class="icon-vs"></a>
+		<h2>${matchInfoDTO?.title}</h2>
+		<a href="http://api2.kkyuyin.com/app/downloadApk?from=WD_89" class="icon-down"></a>
+	</header>
+	#{/if}
+	<!--  
+	<div class="top"><img src="images/top.png"></div>
+	<ul class="act-nav">
+		<li class="on"><a href="#">报名</a></li>
+		<li><a href="#">赛程</a></li>
+		<li><a href="#">奖品</a></li>
+		<li><a href="#">规则</a></li>
+		<li><a href="#">视频</a></li>
+	</ul>
+	-->
+	<div class="sign-phone">
+		<form method="post" action="/m/match/createKKAcount">
+		<input type="hidden" value="${matchInfoDTO?.id}" id="matchInfoId" name="matchInfoId" />
+		<input type="hidden" value="" id="mobile" name="mobile" />
+		<input type="hidden" value="${from}"  id="from"	 name="from" />
+ 		<input type="hidden" value="" id="verifyCode" name="verifyCode" />
+        <input type="hidden" value="${userId}"  id="userId"/>
+        <input type="hidden" value="${isNewKKAccount}"  id="isNewKKAccount"/>
+        <input type="hidden" value="${userType}"  id="userType"/>
+		<div class="row">
+			<label><span class="em">*</span>队长手机号:</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="phone" maxlength="11" />
+			</div>
+			<div id="tips" ></div>
+		</div>
+		<div class="row row-yz">
+			<div class="con">
+				<input type="text" class="input-text required" id="yazheng" maxlength="11" placeholder="请输入短信验证码" />
+			</div>
+			<div class="btn-give" onclick="getVerifyCode();">点击获取</div>
+		</div>
+		<input type="submit" class="btn-sub" value="马上报名" id="send" />
+		</form>
+	</div>
+	
+	<!-- 提示 -->
+	<div id="alert-win" class="mask-pop alert-win" style="display:none;">
+		<div class="pop-alert">
+			<div class="title">提示</div>
+			<div class="con"></div>
+			<div class="btns">
+				<div class="btn-em"  data-action="close">确定</div>
+			</div>
+		</div>
+	</div>
+<script src="/public/js/mobile/match/jquery.js"></script>
+<script src="/public/js/mobile/match/phone.js"></script>
+<script src="/public/js/mobile/match/check_mobile.js"></script>
+  </body>
+</html>

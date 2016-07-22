@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>赛事汇总页</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/game_list.css">
+</head>
+
+<body>
+	<div class="top-bar">
+		<a href="index.html" class="icon-home">主页</a>
+		<a href="javascript:download('android')" class="icon-down">下载</a>
+	</div>
+	<ul class="game-list">
+		<li><a href="/m/yxt.html"><img src="/public/images/mobile/game_yxt.png" width="100%"></a></li>
+		<li><a href="/m/qmqz.html"><img src="/public/images/mobile/game_1.jpg" width="100%"></a></li>
+		<li><a href="/m/ziyou.html"><img src="/public/images/mobile/game_zy_sign.jpg" width="100%"></a></li>
+		<li><a href="/zyzz/m/index.html"><img src="/public/images/mobile/game_2.jpg" width="100%"></a></li>
+		<li><a href="/m/cmfk.html"><img src="/public/images/mobile/game_cm.png" width="100%"></a></li>
+		<li><a href="/m/3dtk.html"><img src="/public/images/mobile/game_tank.png" width="100%"></a></li>
+		
+	</ul>
+	<form style="display:none" id="form" method="post" target="downloadfrm" action="@{KKHomePage.downloadLog()}">
+        <input type="hidden" name="platform" id="platform">
+    </form>
+    <iframe name="downloadfrm" style="display:none"></iframe>
+</body>
+<script>
+    
+    var downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk';
+    var url= window.location.search;
+    if(url.indexOf("?")!=-1)
+    {
+        var params = url.substring(1).split("?");
+        var froms=params[0].split("=");
+        if(froms[0]=='from')
+        {
+            downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk?from='+froms[1];
+        } 
+    }
+    
+    if(${isFromWeixin}){
+        downloadUrl = 'http://api.kkyuyin.com/download';
+    }
+
+    function download(platform) {
+       document.getElementById('platform').value = platform;
+       document.getElementById('form').submit();
+       window.setTimeout('forward()',500);
+    }
+    
+    function forward() {
+        document.location.href = downloadUrl;
+    }
+    
+</script>
+
+</html>

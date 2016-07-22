@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>3D坦克争霸竞技联赛 - 电竞侠</title>
+	<meta name="keywords" content="电竞侠,3D坦克,FPL联赛,视频直播,战队联赛,战队报名,战队排名" />
+	<meta name="description" content="电竞侠——最火的手游战队平台，全球首款为手游战队打造的免费手机游戏语音聊天软件，集领礼包、混战队、即时聊天为一体。实现用户在时空猎人、我叫MT、天天飞车、天天酷跑、放开那三国、刀塔传奇等多款手机网游内实时语音。" />
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/ziyou.css?v001">
+</head>
+<body>
+<div class="head">填写报名信息</div>
+	<div class="form">
+		<form method="post" action="/m/3dtk_submit.html" enctype="multipart/form-data">
+		<div class="row">
+			<label><span class="em">*</span>战队名称(游戏内）:</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="name" name="teamName" maxlength="15" />
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>战队人数(游戏内):</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="teamNumber" maxlength="5" name="teamNumber" />
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>队长QQ:</label>
+			<div class="con">
+				<input  type="text" class="input-text required" id="qq" name="teamLeaderQQ" maxlength="20"/>
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>队长手机号:</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="phone" name="teamLeaderTel" maxlength="11" />
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>所在服务器:</label>
+			<div class="con">
+				<div class="con-select">
+					<input type="text" class="input-text required" id="server" readOnly="true" value="请选择游戏区服" name="gameServerName" />
+					<div class="icon-arrow"></div>
+					<ul class="server-list hide">
+						<li value="一区：闪击波兰">一区：闪击波兰</li>
+						<li value="二区：席卷欧洲">二区：席卷欧洲</li>
+						<li value="三区：沙漠之狐">三区：沙漠之狐</li>
+						<li value="四区：列宁格勒">四区：列宁格勒</li>
+						<li value="五区：库尔斯克">五区：库尔斯克</li>
+						<li value="六区：斯大林格勒">六区：斯大林格勒</li>
+					</ul>
+				</div>
+			</div>
+			<div class="con-tips">(若提交不成功联系QQ：98236)</div>
+		</div>
+		<!--  <div class="row">
+			<label><span class="em">*</span>游戏截图（可看到战队公告）:</label>
+			<div class="con update-con" id="update-photo-new">
+				<div class="btn-update">点击上传</div>
+				<input type="file" id="file-img" multiple="multiple" class="btn-file" name="imgUrl" accept="image/*" />
+				<input type="hidden" class="required" id="update-none" />
+			</div>
+			
+			<div class="con update-con con-update" id="update-photo" style="display: none;">
+				<div class="btn-update-reset">重新上传</div>
+				<input type="file" id="tem-file" multiple="multiple"  class="btn-file"  accept="image/*" name="imgUrl"/>
+				<div class="show-update">
+					<img src="http://placehold.it/60x60" width="30" height="30" id='imgShow'  >
+				</div>
+			</div>
+			<div class="con-tips">(图片5M内,若提交不成功联系QQ：98236)</div>
+		</div> -->
+		<input type="submit" class="btn-sub" value="提交" id="send" />
+		
+		</form>
+	</div>	
+	
+</body>
+<script type="text/javascript" src="/public/js/mobile/jquery.js"></script>
+<script type="text/javascript" src="/public/js/mobile/3dtk/form.js"></script>
+<script type="text/javascript" src="/public/js/mobile/file_imgload.js"></script>
+</html>

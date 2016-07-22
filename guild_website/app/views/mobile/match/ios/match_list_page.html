@@ -1,0 +1,59 @@
+#{if spreadType == 0} 
+#{list items:matchInfoListDTO.list, as:'match' }
+<li  onClick="openMatch (${match?.id})" >
+	<div class="pic">
+		<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+	</div>
+	<div class="con">
+		<div class="name"><span class="icon-sign">报名中</span>${match?.title}</div>
+		<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+	</div>
+</li>
+#{/list}
+#{/if}
+#{if spreadType == 2} 
+#{list items:matchInfoListDTO.list, as:'match' }
+<li  onClick="openMatch (${match?.id})" >
+	<div class="pic">
+		<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+	</div>
+	<div class="con">
+	<div class="name"><span class="icon-start">比赛中</span>${match?.title}</div>
+		<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div>
+	</div>
+</li>
+#{/list}
+#{/if}
+#{if spreadType == 4}
+	<!-- 已结束 -->
+	#{list items:matchInfoListDTO.list, as:'match' }
+	<li  onClick="openMatch (${match?.id})" >
+		<div class="pic">
+			<img src="#{if match?.logoImgUrl == ''}/public/images/mobile/match/event-null.png#{/if}#{else}${match?.logoImgUrl}#{/else}" width="90" height="60">
+		</div>
+		<div class="con">
+			<div class="name">
+			#{if match?.spreadType=='-1' }
+			<span class="icon-prepare">预告中</span>${match?.title}</div>
+			<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+			#{/if}
+			#{if match?.spreadType=='0' }
+			<span class="icon-sign">报名中</span>${match?.title}</div>
+			<div class="time">${match?.applyStartTimeStr} - ${match?.applyEndTimeStr}</div>
+			#{/if}
+			#{if match?.spreadType=='1' }
+			<span class="icon-sign">签到中</span>${match?.title}</div>
+			<div class="time">${match?.signupStartTimeStr} - ${match?.signupEndTimeStr}</div>
+			#{/if}
+			#{if match?.spreadType=='2' }
+			<span class="icon-start">比赛中</span>${match?.title}</div>
+			<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div> 
+			#{/if}
+			#{if match?.spreadType=='3' }
+			<span class="icon-end">已结束</span>${match?.title}</div>
+			<div class="time">${match?.matchStartTimeStr} - ${match?.matchEndTimeStr}</div> 
+			 #{/if}
+		</div>
+	</li>
+	#{/list}
+#{/if}

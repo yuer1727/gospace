@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>CM反恐精英竞技联赛 - 电竞侠</title>
+	<meta name="keywords" content="电竞侠,CM反恐,FPL联赛,视频直播,战队联赛,战队报名,战队排名" />
+	<meta name="description" content="电竞侠——最火的手游战队平台，全球首款为手游战队打造的免费手机游戏语音聊天软件，集领礼包、混战队、即时聊天为一体。实现用户在时空猎人、我叫MT、天天飞车、天天酷跑、放开那三国、刀塔传奇等多款手机网游内实时语音。" />
+	<link rel="stylesheet" type="text/css" href="/public/css/fankong.css">
+</head>
+<body>
+	<div class="main">
+			<h1>CM反恐精英竞技联赛</h1>
+			<div class="bg1"></div>
+			<div class="bg2"></div>
+			<div class="bg3"></div>
+			<div class="btns">
+				<a href="#" class="btn-sign btn" >报名</a>
+				<a href="#" id="down_url_android" target="_self" class="btn-down" >下载电竞侠</a>
+			</div>
+	</div>
+	#{include file="common/footer.html" /}
+	
+	<!--浮层 报名-->
+	<div id='div_sign' class="pop-form" style="display: none;">
+		<div class="head">填写报名信息</div>
+		<form method="post" action="/cmfk_submit" enctype="multipart/form-data">
+		<div class="row">
+			<label><span class="em">*</span>战队名称:</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="name" maxlength="15" name="teamName" />
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>队长QQ:</label>
+			<div class="con">
+				<input  type="text" class="input-text required" id="qq" maxlength="20" name="teamLeaderQQ"/>
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>队长手机号:</label>
+			<div class="con">
+				<input type="text" class="input-text required" id="phone" maxlength="11" name="teamLeaderTel"/>
+			</div>
+		</div>
+		<div class="row">
+			<label><span class="em">*</span>进驻服务器:</label>
+			<div class="con">
+				<div class="con-select">
+				<select class="select required" id="server" name="gameServerName">
+					<option value="">请选择游戏区服</option>
+					<option value="1服">1服</option>
+				</select>
+				<div class="icon-arrow"></div>
+				</div>
+			<div class="con-tips">(若提交不成功联系QQ：208969505)</div>
+			</div>
+		</div>
+		<input type="submit" class="btn-sub" value="提交" id="send"  />
+		</form>
+		<a class="close" href="#">关闭</a>
+	</div>
+</body>
+<script src="/public/js/app/ziyou/jquery.js"></script>
+<script src="/public/js/app/cmfk/form.js"></script>
+<script src="/public/js/app/ziyou/file_imgload.js"></script>
+<script>
+	var downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk';
+	var url= window.location.search;
+	if(url.indexOf("?")!=-1)
+	{
+	    var params = url.substring(1).split("?");
+	    var froms=params[0].split("=");
+	    if(froms[0]=='from')
+	    {
+	        downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk?from='+froms[1];
+	    } 
+	}
+	
+	$(function() {
+	   $('#down_url_android').click(function() {
+	       $.post("@{KKHomePage.downloadLog}",{platform:'android'},function(){
+	           document.location.href = downloadUrl;
+	       });
+	   });
+	});
+</script>
+</html>

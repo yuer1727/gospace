@@ -1,0 +1,96 @@
+#{extends 'common/mobile_main.html' /}
+#{set title:'自由之战3F职业联赛-电竞侠' /}
+
+#{set 'moreStyles'}
+    <link rel="stylesheet" type="text/css" href="/public/css/mobile/ziyou_v2.css">
+#{/set}
+
+#{set 'moreScripts'}
+    <script src="/public/js/mobile/zyzz_v2/home.js"></script>
+#{/set}
+
+<header class="top">
+    <img src="/public/images/mobile/top.jpg" width="100%">
+    <img src="/public/images/mobile/top_title.jpg" width="100%">
+</header>
+<ul class="top-nav">
+    <li class="on"><a href="javascript:void(0);">首页</a></li>
+    <li><a href="@{Activity.zyzzTeam}">精英战队</a></li>
+    <li><a href="@{Activity.zyzzVedio}">精彩视频</a></li>
+    <li><a href="@{Activity.mobileZyzzIntro}">赛事说明</a></li>
+    <li><a href="@{Activity.zyzzApply}">战队报名</a></li>
+</ul>
+<div class="act-gift">
+    <div class="hd">联赛奖品</div>
+    <ul class="gift-list">
+        #{list items:prizeList, as:'prize'}
+            <li><img src='${prize["prizeImgUrl"]}' width='84' height='60'><span class='name'>${prize["prizeName"]}</span></li>
+        #{/list}
+    </ul>
+</div>
+<div class="team-join">
+    <div class="mod-title">参赛战队</div>
+    <ul class="team-nav">
+        <li class="on"><span class="text">赛区1</span></li>
+        <li><span class="text">赛区2</span></li>
+        <li><span class="text">赛区3</span></li>
+        <li><span class="text">赛区4</span></li>
+        <li><span class="text">赛区5</span></li>
+        <li><span class="text">赛区6</span></li>
+        <li><span class="text">赛区7</span></li>
+        <li><span class="text">赛区8</span></li>
+    </ul>
+    <div class="team-con">
+        #{list items:zoneList, as:'zone'}
+            <ul class="team-list #{if zone_index != 1}hide#{/if}">
+                #{list items:zone, as:'team'}
+                    <li class="item-team">
+                        <div class="pic"><img src='${team["avatarUrl"]}' width='55' height='55'></div>
+                        <div class="name">${team["teamName"]}</div>
+                        <div class="info">战力 ${team["votes"]}</div>
+                        <a href="#" class="btn-vote">+战力</a>
+                    </li>
+                #{/list}
+            </ul>
+        #{/list}
+    </div>
+</div>
+<form style="display:none" id="form" method="post" target="downloadfrm" action="@{KKHomePage.downloadLog()}">
+        <input type="hidden" name="platform" id="platform">
+</form>
+<iframe name="downloadfrm" style="display:none"></iframe>
+<!--投票浮层-->
+<div class="pop-alert" style="display: none;">
+    <div class="title">请下载电竞侠参与投票</div>
+    <div class="logo"><img src="/public/images/mobile/logo.png" width="60" height="60"></div>
+    <a href="javascript:download('android')"  class="btn-down">立即安装</a>
+    <div class="btn-close"></div>
+</div>
+<script>
+    var downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk';
+    var url= window.location.search;
+    if(url.indexOf("?")!=-1)
+    {
+        var params = url.substring(1).split("?");
+        var froms=params[0].split("=");
+        if(froms[0]=='from')
+        {
+            downloadUrl = 'http://api2.kkyuyin.com/app/downloadApk?from='+froms[1];
+        } 
+    }
+    
+    if(${isFromWeixin}){
+        downloadUrl = 'http://api.kkyuyin.com/download';
+    }
+
+    function download(platform) {
+       document.getElementById('platform').value = platform;
+       document.getElementById('form').submit();
+       window.setTimeout('forward()',500);
+    }
+    
+    function forward() {
+        document.location.href = downloadUrl;
+    }
+    
+</script> 

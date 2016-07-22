@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>赛事专区</title>
+  <link rel="stylesheet" href="/public/css/mobile/3rdmatch/gamezone.css?0cd2cc3a2c">
+</head>
+<body>
+  <header class="banner">
+    <img class="bg" src="${organizer.imgUrl}" alt="">
+    <div class="cover">
+      <p class="name">${organizer.name}</p>
+    </div>
+  </header>
+  <input type='hidden' id='orgId' value='${organizer.id}' />
+  #{if newsList.size() >= 1}
+  <section class="mod">
+    <div class="mod-hd">
+      <h2 class="mod-title">赛事资讯</h2>
+      <a href="/m/match/thirdparty/moreNews?orgId=${organizer.id}&pageNO=${pageNO}" class="mod-more">更多</a>
+    </div>
+    <ul class="news-tj">
+      	#{list items:newsList, as:'news' }
+      	<li>
+        	<a href="/m/match/thirdparty/newsDetail?newsId=${news.id}">
+          	<img src="${news.imgUrl}" alt="">
+          	<p class="cover">${news.title}</p>
+        	</a>
+      	</li>
+      	#{/list}
+    </ul>
+  </section>
+  #{/if}
+  
+  #{if matchInfoList}
+  <section class="mod">
+    <div class="mod-hd">
+      <h2 class="mod-title">比赛项目</h2>
+    </div>
+	<input type='hidden' id='pageNO' value='${pageNO}' />
+	<input type='hidden' id='pageSize' value='${pageSize}' />
+    <ul id="ajaxContainer" class="race-list">
+    	#{list items:matchInfoList, as:'matchInfo' }
+      	<li>
+        	<a class="inner" href="/m/match/gift_rule.html?organizer=2&matchInfoId=${matchInfo.id}">
+          	<img src="${matchInfo.topImgUrl}" alt="">
+          	<div class="right">
+            	<p class="title">${matchInfo.title}</p>
+            	<p>状态: <span class="on">${matchInfo.status}</span></p>
+            	<p>奖励: ${matchInfo.awardType}</p>
+            	<p>时间: ${matchInfo.timeStr}</p>
+          	</div>
+        	</a>
+     	</li>
+     	#{/list}
+    </ul>
+    <div class="module-more loading" id="loading">
+			<div id="loadingTip" class="item"><span class="o-modify-pull">加载更多</span></div>
+			<div id="noMoreTip" class="item">对不起，已经没有下一页数据！</div>
+			<div id="errorTip" class="item">网络繁忙，点击重试</div>
+			<div id="moreBtn" class="item"><span class="o-modify-pull">加载更多</span></div>
+	</div>
+  </section>
+  #{/if}
+</body>
+
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/scroll_bottom_load.js"></script>
+<script type="text/javascript" src="/public/js/mobile/3rdmatch/matchinfo_ajax_list.js"></script>
+<script type="text/javascript" src="/public/js/mobile/match/zepto_touch_ai.js"></script>
+<script type="text/javascript" src="/public/js/seajs/sea.js"></script>
+<script>
+	$(document).ready(function() {
+		var ajaxList = initLoad;
+		ajaxList()
+	});
+	
+	
+    var verNum = new Date().getTime();
+    seajs.config({
+        base: "../js/",
+        map: [[ '.js', '.js' ]]
+    });
+    seajs.use("/public/js/mobile/3rdmatch/match.js");
+
+</script>
+</html>

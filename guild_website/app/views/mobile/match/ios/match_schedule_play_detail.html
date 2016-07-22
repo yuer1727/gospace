@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  	<title>${playItemDTO?.matchTitle}</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+	
+	<!-- 大图切换  begin -->
+	#{if playItemDTO?.scheduleVedioList || playItemDTO?.scheduleImageList }
+	<div class="scrolllist side-show" id="sideShow">
+	    #{if size>1}
+		<a class="abtn aleft" href="#left" title="左移"><span class="icon"></span></a>
+		#{/if}
+		<div class="imglist_w">
+			<ul class="imglist">
+			#{list items:playItemDTO?.scheduleVedioList, as:'video' }
+			<a href="javascript:void(0);" onclick="openVideo(this)" data-url="${video.videoUrl}" data-vid="${video.id}">
+				<li><img src="#{if video.videoLogoUrl} ${video.videoLogoUrl} #{/if} #{else} /public/images/mobile/match/video_normal.jpg#{/else}"  width="100%" /><span class="icon-video"></span></li>
+			</a>
+			#{/list}
+			#{list items:playItemDTO?.scheduleImageList, as:'img' }
+				#{if img.imgUrl && img.imgUrl != ""}
+				   <li>
+				       <a href="#" onclick="amplifyImage(this)" image-pos="${img_index}">
+				       <img src="${img.imgUrl}" width="100%"  class="image"/>
+				       </a>
+				   </li>
+				   #{/if}
+			#{/list}
+			</ul>
+		</div>
+		#{if size>1}
+		<a class="abtn aright" href="#right" title="右移"><span class="icon"></span></a>
+		#{/if}
+	</div>
+    #{/if}
+    #{else}
+    <div class="side-show">
+		<div class="none-info">
+			<div class="icon-face"></div>
+			<div class="none-text">暂无内容</div>
+		</div>
+	</div>
+    #{/else}
+	<!-- 大图切换 end -->
+
+	<ul class="match-list no-margin">
+		<li class="item-match no-margin">
+			<div class="pic1 show_guild">
+			<img src="#{if playItemDTO?.squadLogoUrl } ${playItemDTO?.squadLogoUrl} #{/if} #{else} /public/images/mobile/match/no-guild.png #{/else} " width="54" height="54">
+			</div>
+			<div class="name1">${playItemDTO?.squadName}</div>
+			<div class="pic2 show_guild">
+			<img src="#{if playItemDTO?.againstLogoUrl } ${playItemDTO?.againstLogoUrl} #{/if} #{else} /public/images/mobile/match/no-guild.png #{/else} " width="54" height="54">
+			</div>
+			<div class="name2">${playItemDTO?.againstName}</div>
+			<div class="result">
+			#{if playItemDTO?.score == null } #{if isPlayEndTime } 0:0 #{/if} #{else}VS#{/else}#{/if}
+			#{if playItemDTO?.score != null } ${ playItemDTO?.score }:${ playItemDTO?.againstScore } #{/if}
+			</div>
+			<div class="state"> #{if playItemDTO?.score!=null || isPlayEndTime } 已结束 #{/if} #{else} 比赛中 #{/else}</div>
+			<div class="count">
+				<div class="bar">
+					<div class="bg" style="width: 55%;"></div>
+				</div>
+			</div>
+		</li>
+	</ul>
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+<input id="userType" type="hidden" value="${ userType }">
+<script src="/public/js/mobile/jquery2/jquery-2.1.0.min.js"></script>
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/showGuild.js"></script>
+<script src="/public/js/mobile/match/slider.js"></script>
+<script type="text/javascript">
+	$(function(){
+		showGuild();//异步加载点击战队头像事件
+		 
+		//默认状态下左右滚动
+		$("#sideShow").xslider({
+			unitdisplayed:1,
+			movelength:1,
+			unitlen:280,
+			autoscroll:null
+		});
+		//当只有一个视频截图的时候
+		var tagCount=$(".imglist li").length;
+		if(tagCount==1){
+			$("#sideShow").addClass("side-show-one");
+			var clientWidth=document.body.clientWidth; // 当前内容的宽度
+			var clientheight=clientWidth*304/540; // 当前内容的高度
+			$(".imglist li").width(clientWidth);
+			$(".side-show-one").height(clientheight);
+			$(".imglist_w").height(clientheight);
+			$(".imglist_w li img").height(clientheight);
+		}
+			else{
+		}
+	})
+</script>
+<script>
+//提示弹窗
+function _alert(msg) {
+	var $alertWin = $('#alert-win');
+    $alertWin.show().find('.con').html(msg);
+  }
+	function openVideo(ele) {
+		var url = $(ele).attr('data-url');
+		var vid = $(ele).attr('data-vid');
+		JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		JSBridge.callNative("NineGameClient", "openWindow", {"url": url, "target": "video", "options": {"video_id": vid, "match_id" : ${playItemDTO?.matchId}} });
+	}
+	function amplifyImage(ele){
+		JSBridge.isAndroid = navigator.userAgent && (navigator.userAgent.indexOf("NineGameClient/android") > -1 || navigator.userAgent.indexOf("com.tongmo.kk") > -1);
+		var imagePos=$(ele).attr('image-pos')-1;
+		var imageStr='';
+		var size=$('.image').size();
+		var count=1;
+		$('.image').each(function(){
+			if(count!=size)
+			    imageStr=imageStr+$(this).attr('src')+'%60';
+			else
+				imageStr=imageStr+$(this).attr('src');
+			count=count+1;
+		});
+		window.alert('kk://page/gallery?urls='+imageStr+'&pos='+imagePos);
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>获得胜利</title>
+  <link rel="stylesheet" href="/public/css/mobile/match/djx-match-spec.css?9dd38bf29e">
+</head>
+<body>
+  <section class="succ-page">
+    <header class="succ-ico">
+      <img src="http://image.uc.cn/s/uae/g/0y/djx_client/match/opt_icons/succ_jinji.png" alt="">
+    </header>
+    <div class="tips">
+      <p>恭喜${respDTO.squadName}获得最终胜利，请耐心等待最终结果！${showMsg}</p>										
+    </div>
+    <div class="fixed-bar">
+      #{if respDTO?.contactGroupId != null && matchInfoDTO?.applyType == 1 && respDTO?.roleType != null && respDTO?.roleType != 2}
+    		<a id="groupDetail" href="#" class="btn btn-cancel" onclick="openClientPage('kk://chat/enterGroup?id=${respDTO?.contactGroupId}')" >队内私聊群</a>	
+      #{/if}
+      <p class="tr"><a href="/m/match/gift_rule.html?matchInfoId=${matchInfoDTO.id}" class="rule-link">规则详情&gt;</a></p>
+    </div>
+  </section>
+</body>
+
+<script src="http://fe.9game.cn/pkg/sdk/sdk-debug.js?from=kk"></script>
+<script src="/public/js/mobile/match/zepto.js"></script>
+<script src="/public/js/mobile/match/djx_client_common.js"></script>
+<script>
+	$(function() {
+		hideShareButton();
+		enterGroupSupport(); //队内私聊群支持方法
+	});
+</script>
+</html>

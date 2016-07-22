@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>${matchInfoDTO?.title}</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1,user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="stylesheet" type="text/css" href="/public/css/mobile/match/match.css">
+</head>
+<body>
+<style>
+    body{ background-color: #F2F2F2;}
+</style>
+
+ <div class="sub-succ">
+  <br/>
+  <div class="act-rule">
+  <div align="center" class="sub-con">
+  <span class="icon-succ"></span>
+  #{if matchInfoDTO?.isAudit == 0}
+  #{if isNew == 0 }
+      	恭喜,<span class="em">"${guildName}"战队</span>报名成功！
+  #{/if}
+  #{else}恭喜,报名成功！并成功创建"${guildName}"电竞侠战队#{/else}
+  #{/if}
+  #{else}
+      	报名信息已提交，请耐心等候审核！
+  #{/else}
+  </div>
+  </div>
+ <div class="sub-form">
+  	  <div class="tips-info">
+            请于${signupTime} 领取比赛入场劵, 
+      <span class="em">过期未领取视为放弃比赛资格！</span>      
+      </div>
+      <br/>
+ </div>
+</div>
+
+
+ <input type="hidden"  id="userType" value="${ userType }"/>
+ <input type="hidden"  id="userId" value="${ userId }"/>
+ <input type="hidden"  id="matchInfoId" value="${matchInfoDTO?.id}"/>
+
+<!-- 提示 -->
+<div class="pop-toast" style="display: none;"><div class="toast"></div></div>
+<script src="/public/js/mobile/match/jquery.js"></script>
+<script src="/public/js/mobile/match/showGuild.js"></script>
+<script src="/public/js/mobile/match/sign-succ.js"></script>
+<script src="/public/js/mobile/match/succ.js"></script>
+#{if isNew != 0 }
+<script type="text/javascript">
+//window.alert("kk://common/broadcastMessage?msgkey=create_guild_success&data=${data}");
+</script>
+#{/if}
+</body>
+</html>
